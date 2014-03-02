@@ -1,0 +1,89 @@
+\section{Slide 16 Valutazione dell'output}
+
+
+\paragraph{Valutare la localizzazione delle apnee a rischio.}
+Se si vuole valutare un algoritmo che riconosce la presenza di una apnea troppo lunga allora possiamo vedere lo spazio dell'input come una sequenza di intervalli temporali ognuno che rappresenta una apnea troppo lunga.
+Possiamo pensare nello stesso modo l'output del'algoritmo.
+Si possono verificare vari casi:
+% Come valutiamo l'output rispetto a questa classe di input?
+% Supponiamo che in input ci sia una apnea troppo lunga (cio\`e maggiore di una certa soglia $S$ di sicurezza) che comincia al tempo $s_{in}$ e finisce al tempo $f_{in}$. Si possono verificare vari casi:
+% \begin{itemize}
+%   \item
+%     C'\`e almeno un intervallo temporale di output $(s_{out}, f_{out})$ tale che 
+%     \begin{itemize}
+%       \item 
+% 	$(s_{out}, f_{out})$ interseca $(s_{in}, f_{in})$
+%       \item
+% 	$s_{out} + S \leq s_{in} + S + T$ dove $T$ \`e una soglia di tolleranza dell'errore.
+%       \item
+% 	$f_{out}-s_{out}>S$
+%     \end{itemize}
+%     In tal caso diciamo che l'evento $(s_{in}, f_{in})$ \`e un \emph{vero positivo} cio\`e un evento riconosciuto in modo corretto.
+%   \item
+%     Se non ci sono intervalli temporali di output con le propriet\`a elencate al punto precedente allora diciamo che l'evento $(s_{in}, f_{in})$ \`e un \emph{falso positivo}.
+% \end{itemize}
+% Rimane il caso in cui l'algoritmo produce in output un intervallo $(s_{out}, f_{out})$ di lunghezza maggiore della soglia di sicurezza ma non abbiamo nessun intervallo di input che lo interseca e che ha durata maggiore della soglia di sicurezza. 
+% In tal caso abbiamo un \emph{falso negativo}. 
+% Si pu\`o anche definire cosa intendiamo per \emph{vero negativo} e cio\`e una mancanza di apnea troppo lunga che l'algoritmo non classifica come apnea troppo lunga. 
+
+
+
+%     \begin{itemize}
+%       \item 
+% 	$(s_{out}, f_{out})$ interseca $(s_{in}, f_{in})$
+%       \item
+% 	$s_{out} + S \leq s_{in} + S + T$ dove $T$ \`e una soglia di tolleranza dell'errore.
+%       \item
+% 	$f_{out}-s_{out}>S$
+%     \end{itemize}
+
+
+ 
+
+
+
+\begin{bf}Vero positivo.\end{bf}
+  Supponiamo che in input ci sia una apnea troppo lunga e che ci sia almeno un intervallo temporale di output che:
+  \begin{itemize}
+    \item 
+      Ha una durata maggiore della soglia di rischio. 
+    \item
+      Non inizia troppo in ritardo rispetto all'inizio dell'intervallo di input.
+  \end{itemize}
+  In tal caso siamo in presenza di un \emph{vero positivo} cio\`e un evento riconosciuto in modo corretto.
+  Il soggetto ha una apnea nel sonno troppo lunga e il sistema suona l'allarme. Il soggetto si sveglia, spegne l'allarme e torna a dormire sano e salvo (si spera).
+
+\begin{bf}Falso positivo.\end{bf}
+  Supponiamo che in input ci sia una apnea troppo lunga ma in output non ci sono intervalli che
+  \begin{itemize}
+    \item 
+      Abbiano una durata maggiore della soglia di rischio. 
+    \item
+      Non inizino troppo in ritardo rispetto all'inizio dell'intervallo di input.
+  \end{itemize}
+  Significa che il soggetto ha una apnea nel sonno troppo lunga e il sistema non suona l'allarme. 
+  Questo caso \`e rischioso per la salute del paziente.
+  Siamo in presenza di un \emph{falso positivo}.
+
+
+
+\begin{bf}Vero negativo.\end{bf}
+  In input non ci sono pause respiratorie troppo lunghe e neanche in output.
+  Il soggetto non ha una apnea nel sonno troppo lunga e il sistema non suona l'allarme. 
+  Questo caso \`e auspicabile. 
+  Maggiore \`e la frequenza di questi casi, maggiore \`e la qualit\`a del sonno del soggetto.
+  Siamo in presenza di un \emph{vero negativo}.
+
+
+
+\begin{bf}Falso negativo.\end{bf}
+  In input non c'\`e una pausa respiratoria troppo lunga ma in output c'\`e un intervallo pi\`u lungo della soglia di allarme.
+  Il soggetto non ha una apnea nel sonno troppo lunga e il sistema suona l'allarme. 
+  Il soggetto si sveglia, spegne l'allarme e torna a dormire. 
+  Non ha modo di capire se si \`e verificato un vero positivo o un falso negativo.
+  Siamo in presenza di un \emph{falso negativo}. 
+  I falsi negativi degradano la qualit\`a del sonno del soggetto ma non sono un rischio grave per la salute quanto i falsi positivi.
+  Tuttavia se il degrado nella qualit\`a del sonno \`e eccessivo potrebbe causare danni psicofisici al soggetto.
+
+
+

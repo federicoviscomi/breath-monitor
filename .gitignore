@@ -1,0 +1,16 @@
+*.sdf
+*.class
+*.jar
+*.aux
+*.log
+*.toc
+*.aup
+*.aux
+*.idx
+*.ilg
+*.ind
+*.tex~
+*.tex.backup
+*.toc
+*.out
+eseciziOctave/*

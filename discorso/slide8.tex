@@ -1,0 +1,199 @@
+\section{Slide 8 Schema di funzionamento}
+
+
+% Il software pu\`o rientrare in due categorie:
+% \begin{itemize}
+%   \item
+%     La prima categoria si chiama \emph{auscultazione assistita dal calcolatore}, alla quale afferiscono sistemi di supporto alle decisioni cliniche, progettati per aiutare il medico nella diagnosi attraverso i suoni del corpo. 
+%     In questo caso gli utenti del sistema fanno parte del personale medico-sanitario di una struttura clinica.
+%   \item
+%     La seconda categoria \`e il monitoraggio mobile di segnali biomedici. 
+%     In questo caso gli utenti del sistema possono essere soggetti privi di conoscenze mediche o infermieristiche.
+% \end{itemize}
+% 
+%    \begin{table}
+%   \centering
+%   \begin{tabular}{p{0.17\textwidth} p{0.77\textwidth}}
+%   \\
+%   \hline
+%       Caso d'uso 
+%     & 
+%       Attiva monitoraggio
+%   \\\hline\\
+%       Attori
+%     &
+%       C'\`e un solo attore attivo: un soggetto che intende monitorare il proprio respiro oppure un membro del personale medico sanitario che intende monitorare il respiro di un paziente. Il soggetto del quale si misura il respiro \`e un attore passivo in questo caso d'uso perch\'e in generale esso pu\`o evitare di interagire in modo attivo col sistema stesso. 
+%   \\
+%       Precondizioni
+%     &
+%       \begin{itemize}
+% 	\item 
+% 	  Lo stetoscopio elettronico \`e stato installato correttamente sul torace del soggetto o sulla trachea del soggetto.
+% 	\item
+% 	  I dispositivi di interfaccia tra lo stetoscopio e il sistema sono configurate correttamente.
+%       \end{itemize}
+%   \\
+%       Sequenza principale degli eventi
+%     &
+%       \begin{enumerate}
+% 	\item 
+% 	  L'attore attiva il sistema di monitoraggio attraverso l'interfaccia utente. 
+% 	  In questo passo l'attore specifica se intende memorizzare o meno i dati e in che forma.
+% 	  L'attore pu\`o specificare la soglia di allarme per l'apnea.
+% 	\item
+% 	  Il sistema stabilisce una connessione con lo stetoscopio elettronico. 
+% 	  Se questo passo fallisce allora comincia la sequenza alternativa degli eventi.
+% 	\item	
+% 	  Il sistema passa in fase di monitoraggio.
+% 	\item
+% 	  Se la frequenza di respirazione scende al disotto di una certa soglia critica, il sistema lo segnala attraverso una parte dedicata dell'interfaccia utente, ad esempio un segnale acustico.
+%       \end{enumerate}      
+%   \\
+%       Sequenza alternativa degli eventi
+%     &
+%       \begin{enumerate}
+% 	\item 
+% 	  Il sistema segnala un errore appropriato attraverso l'interfaccia utente.
+%       \end{enumerate}      
+%   \\
+%       Postcondizioni
+%     &
+%       Il sistema di monitoraggio \`e attivo. 
+%   \\\\
+%   \hline
+%   \end{tabular}
+%    \caption{Caso d'uso: attiva monitoraggio}
+%    \label{casoDUsoMonitoraggio}
+%    \end{table}
+
+
+Il caso d'uso principale ha la seguente sequenza degli eventi principale:
+\begin{description}
+  \item[Acquisizione dati dallo stetoscopio elettronico]
+    Il sistema acquisisce un blocco di segnale dallo stetoscopio elettronico ad esempio un secondo di segnale.
+%  In generale i sistemi di monitoraggio continuo di parametri fisiologici hanno bisogno di interfacciarsi con i sensori di interesse. 
+% Questo sistema non \`e una eccezione. 
+% Riteniamo che una interfaccia minima con lo stetoscopio elettronico sia quella illustrata nella figura . Le operazioni illustrate sono:
+% \begin{description}
+%   \item[$connect$]
+%     Inizializza la connessione con il sensore ed allocare eventuali risorse necessarie.
+%   \item[$disconnect$]
+%     Terminare la connessione con il sensore e deallocare eventuali risorse.
+%   \item[$read$]
+%     Legge $length$ campioni di input e li memorizza nel buffer a partire dall'offset specificato.
+%   \item[$skip$]
+%     Tralascia un certo numero di campioni. Puo' essere utile per recuperare in parte un eventuale ritardo globale.
+% \end{description}
+% 
+% 
+% Il sistema deve includere almeno una componente che implementa l'interfaccia tra il dispositivo di monitoraggio e il sensore.
+% Alcune opzioni sono illustrate in figura
+% 
+Ci sono vari modi di implementare una connessione tra lo stetoscopio e il dispositivo di monitoraggio. 
+% Una scelta che dobbiamo fare riguarda il mezzo di trasmissione del segnale:
+% \begin{description}
+%   \item[via cavo]
+%     In questa modalit\`a spesso \`e necessaria la presenza di personale medico specializzato. Tra gli svantaggi di questa impostazione notiamo: ridotta mobilit\`a del sistema, probabile necessit\`a di alimentazione elettrica dalla rete, rischio di gestione inadeguata di contatti nei cavi.
+%   \item[senza cavo]
+%     Una connessione senza fili presenta alcuni vantaggi ad esempio permette al paziente di muoversi pi\`u liberamente e i costi di installazione si possono ridurre.
+% \end{description}
+% 
+% Riteniamo che per questo sistema sia pi\`u adeguata una connessione senza fili. 
+% 
+% Un'altra scelta riguarda il protocollo di comunicazione, il quale per\`o potrebbe dipendere anche dalla scelta del mezzo di trasmissione.
+% 
+% 
+% Siamo in presenza di un problema la cui modellazione porta naturalmente a pensare ad un pattern architetturale di tipo client server. 
+% Un server \`e un dispositivo fisico o virtuale che possiede una risorsa da condividere, in questo caso il server \`e lo stetoscopio e la risorsa da condividere \`e il suono che esso registra. Un cliente \`e un dispositivo fisico o virtuale che richiede una certa risorsa ad un server, in questo caso il client \`e il dispositivo di analisi del suono.
+% 
+% \paragraph{bluethoot}
+% In base alle considerazioni fatte da , la teconologia wireless bluethoot si adatta bene al nostro sistema. 
+% 
+Ad esempio la connessione pu\`o essere wireless bluethoot.
+Il bluethoot permette di stabilire semplici connessioni ad hoc tra dispositivi che hanno a disposizione poca energia elettrica e che sono posti a piccola distanza tra di loro.
+% dove per piccola distanza approssimativamente intendiamo che i dispositivi si trovano nella stessa stanza o anche entro certi limiti in una stessa struttura ospedaliera. 
+% I valori precisi di consumi, distanze e velocit\`a di trasmissione variano da dispositivo a dispositivo. 
+% Lo stetoscopio elettronico invia continuamente dati al sistema di riconoscimento attraverso il canale bluethoot. 
+% I dati inviati dipendono dal particolare stetoscopio ma possiamo aspettarci che questi siano sotto forma di pacchetti di un segnale audio digitale. 
+% 
+% \paragraph{velocit\`a dell'intefaccia}
+% 
+% Supponiamo che il sistema abbia una velocit\`a media di esecuzione di $v_{s}$ campioni di segnale al secondo, e supponiamo che $v$ sia maggiore della frequenza di campionamento e che quindi il sistema riesca ad analizzare un segnale di un secondo in un tempo minore di un secondo. Questa velocit\`a si intende calcolata senza contare il tempo di trasmissione dallo stetoscopio al sistema.
+% 
+%  Supponiamo che la velocit\`a di trasmissione dell'interfaccia tra sistema e stetoscopio sia $v_{i}$ bit al secondo e siano $f_{c}$ la frequenza di campionamento del segnale e $size$ la dimensione in bit di un campione di segnale. Allora deve valere
+%  \[
+%    \displaystyle  \frac{f_{c}}{v_{s}} + \displaystyle \frac{f_{c}}{\left\lfloor\frac{v_{i}}{size}\right\rfloor} \leq 1s
+%  \]
+%  affinch\'e il sistema non accumuli ritardo.
+
+  \item[Estrazione dei suoni respiratori]
+    In questa fase il sistema cerca di isolare i suoni respiratori da qualli cardiaci e dai rumori esterni. 
+    Ne parlo pi\`u in dettaglio in una slide successiva.
+  \item[Riconoscimento delle apnee]
+    In questa fase il sistema cerca di riconoscere le pause respiratorie e tiene traccia della durata totale delle ultime pause consecutive.
+  \item[Caso di allarme?]
+    Se la durata totale delle ultime pause consecutive \`e maggiore della soglia di rischio allora il sistema suona una allarme e si mette in attesa che questa venga disattivata attraverso l'interfaccia utente.
+    Altrimenti il ciclo si ripete.
+\end{description}
+
+In un certo senso quindi l'output \`e la presenza o l'assenza di una pausa respiratoria nel blocco di segnale acquisito al punto inziale.
+% 
+% \subsection{Interfaccia utente}
+% 
+% Sono state implementate due interfacce minimali: 
+% \begin{description}
+%   \item[console]
+%     Un interprete di comandi da console che ha questo aspetto:
+%     \begin{verbatim}
+% Breath Monitor 
+% by Federico Viscomi
+% type help for a command list
+% 
+% $ help
+% 
+% exit                	exit application             
+% help                	print this help               
+% list                	list working directory content
+% monitor -f filename 	start breath recognition on given file name
+% stop                	stop current monitoring if any
+% $ 
+%     \end{verbatim}
+% 
+%   \item[GUI]
+%     Una interfaccia grafica basata su Swing che offre le stesse funzioni di quella grafica e in pi\`u usa la libreria open source JMathPlot  per disegnare il grafico nel dominio del tempo del segnale. 
+%     Questo grafico \`e utile solo nella versione iniziale del sistema per motivi di debug. 
+%     Mentre in una versione successiva del sistema si pu\`o rimpiazzare questo grafico con quello del flusso d'aria. 
+%     La finestra principale \`e illustrata in figura 
+% \end{description}
+% 
+
+
+
+% In un sistema real time di elaborazione di segnali digitali, il segnale in input pu\`o essere virtualmente illimitato nel tempo. 
+% In realt\`a dei valori che massimizzano la durata del segnale si potrebbero trovare ma sono abbastanza grandi da costringerci ad usare una particolare definizione di scadenze temporali. 
+% Il ritardo nell'elaborazione deve essere limitato anche se il processo continua per un tempo illimitato. 
+% Quindi consideriamo la media del tempo di elaborazione del segnale per campione di segnale in un intervallo di tempo abbastanza piccolo rispetto ai vincoli real time, ad esempio un secondo. 
+% Questa media non deve essere maggiore del periodo di campionamento. 
+% Questo criterio vale sia che il segnale venga esaminato in blocchi sia che il segnale venga esaminato campione per campione
+% In altre parole un sistema real time di elaborazione di un segnale virtualmente illimitato deve avere un tempo di esecuzione per secondo di segnale, minore di un secondo.
+
+
+% La velocit\`a di esecuzione un algoritmo \`e una grandezza data dal rapporto tra la dimensione dell'input e il tempo di esecuzione su di esso.
+% % In questo caso la dimensione dell'input \`e la durata del segnale e non ci interessa la velocit\`a calcolata su tutto il segnale di input ma quella calcolata ad intervalli regolari di dimensione piccola rispetto ai vincoli real time.
+% Quindi si pu\`o definire la velocit\`a $v$ del processo come la quantit\`a di campioni che ci sono in un secondo di segnale, fratto il tempo impiegato per l'elaborazione di un secondo di segnale. 
+% In un secondo di segnale ci sono un numero di campioni pari alla frequenza di campionamento del segnale $f_{c} Hz$.
+% Il sistema pu\`o calcolare tale velocit\`a ogni secondo e quindi produrre una sequenza di velocit\`a $v_{1}, v_{2}, \cdots $. 
+% Una condizione necessaria affinch\'e il sistema si trovi sempre (ogni secondo) in uno stato valido \`e la seguente:
+% \[
+%   \forall n.\; v_{n} \geq f_{c}
+% \]
+% 
+% 
+% Il sistema in fase di monitoraggio deve segnalare la presenza di apnee troppo lunghe. 
+% In particolare consideriamo troppo lunga una apnea di $30$ secondi. 
+% Partiamo dall'assunto che le sole scadenze siano quelle relative all'evento apnea troppo lunga e che non rispettare una scadenza significa non dare l'allarme in tempo prima che il soggetto rischi gravi problemi cardiorespiratori. 
+% Allora ci troviamo in presenza di un sistema real time hard. 
+% Tuttavia i vincoli di tempo per le scadenze sono blandi relativamente ai tempi di esecuzione che si possono prevedere su un calcolatore moderno.
+% 
+
+

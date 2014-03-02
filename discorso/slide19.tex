@@ -1,0 +1,20 @@
+\section{Slide 19 Caso di test di tolleranza al rumore bianco}
+
+
+In questo caso di test eseguiamo l'algoritmo su una registrazione di suoni respiratori normali alla quale aggiungiamo del rumore bianco. 
+L'intensit\`a del rumore aggiunto va da $0dB$ fino all'intensit\`a massima dei suoni della registrazione che \`e di $0.2dB$.
+L'incremento nel rumore del suono \`e di un decimo dell'intensit\`a massima quindi ci sono $11$ file di input diversi in totale.
+% In nessun caso era presente una apnea troppo lunga e in nessun caso l'algoritmo ha rilevato la presenza di una apnea troppo lunga quindi dal punto di vista del riconoscimento di apnee troppo lunghe, l'algoritmo funziona in modo corretto. 
+% \`E comunque interessante valutare l'output dell'algoritmo con un maggior livello di dettaglio. 
+La figura  illustra una rappresentazione dell'output dell'algoritmo sui file di test e contiene un grafico per ogni file di input.
+I valori sulle ascisse segnano il tempo in decimi di secondo.
+I grafici contenuti nella figura dal basso verso l'alto escluso il primo sono relativi a file che hanno una quantit\`a di rumore crescente e mostrano quali parti dei rispettivi file vengono riconosciuti come respiro e quali parti vengono riconosciuti come apnea.
+Invece il primo grafico in basso rappresenta il file originale in termini di fasi di respiro e fasi di pausa, stimate da un ascolto del file.
+I valori di questo grafico sono approssimativi e non \`e possibile ottenere valori pi\`u precisi se non si misura il flusso d'aria in modo diretto.
+Notiamo che gli ultimi $7$ grafici dal basso sono semplicemente dei segmenti di retta, questo perch\`e l'algoritmo riconosce l'intero file come respirazione cio\`e non riconosce alcuna pausa. 
+Mentre nei primi $5$ grafici dal basso il segmento di retta pu\`o essere in basso ad indicare una pausa oppure in alto ad indicare la presenza di una inspirazione o di una espirazione.
+
+
+Ricapitolando:
+Se il rumore bianco ha una intensit\`a che supera il $30\%$ dell'intensit\`a massima dei suoni respiratori allora il sistema non riconosce nessuna pausa respiratoria.
+

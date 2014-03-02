@@ -1,0 +1,6 @@
+\section{Slide 13 Riconoscimento delle apnee}
+Dopo la fase di filtraggio passiamo alla fase di risconoscimento.
+L'energia del segnale \`e definita semplicemente come la somma dei quadrati dei campioni.
+Ci chiediamo se l'energia in una finestra rettangolare di $10ms$ sia maggiore dell'energia media nella finestra rettangolare di $4s$ che la contiene.
+Se \`e maggiore allora il suono nella finestra di segnale viene classificata come inspiratorio o espiratorio, altrimenti il suono viene classificato come pausa respiratoria.
+In seguito troviamo la fase di clustering che serve per correggere eventuali errori, ad esempio un picco nel suono che non era causato dal respiro e che non \`e stato eliminato dalla fase di filtraggio oppure serve per unire la fase di espirazione con quella di inspirazione in quanto potrebbe esserci una pausa molto breve tra di esse.

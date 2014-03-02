@@ -1,0 +1,46 @@
+\section{Slide 15 Creare i casi di test}
+
+Per la scelta dei casi di test usiamo un approccio di tipo black-box e quindi esaminiamo da prima lo spazio dell'input e poi i possibili scenari di uso. 
+Lo spazio dell'input \`e un sottoinsieme del tipo dell'input nel quale rientrano tutti i segnali audio che possono essere ascoltati da uno stetoscopio elettronico posizionato sul petto di un soggetto.
+I test fatti sono di tipo \emph{oracolo} nel senso che l'output dell'algoritmo in ogni caso di test viene confrontato con il risultato che l'algoritmo dovrebbe fornire. 
+Ad esempio alcuni casi di test possono avere come input:
+\begin{itemize}
+  \item
+    Un file audio abbastanza lungo da simulare un monitoraggio del sonno reale. 
+    Lo scopo di un caso d'uso con questo input \`e la valutazione della velocit\`a a lungo termine dell'algoritmo.
+  \item
+    Dei suoni respiratori sovrapposti a rumore di vari tipo ed intensit\`a. 
+    Lo scopo di un caso d'uso con questo input \`e la valutazione della tolleranza al rumore.
+    Per creare dei casi che valutano la resistenza al rumore si pu\`o procedere nel modo seguente:
+    \begin{enumerate}
+      \item 
+	Scegliere una file contenente una sorgente di rumore e scegliere una intensit\`a della sorgente di rumore.
+      \item
+	Filtrare il file di rumore in base ad un certo modello acustico del corpo. 
+	Cio\`e cercare di prevedere cosa lo stetoscopio sente se \`e presente la sorgente di rumore scelta. 
+	Questo modello acustico \`e necessariamente un modello approssimato. 
+	In una prima fase elementare di modellazione possiamo usare un semplice filtro attenuatore e supporre che il rumore sia di tipo additivo.
+      \item
+	Scegliere un file contente un respiro.
+      \item
+	Fare un mix dei file.
+    \end{enumerate}
+  \item
+    Suoni respiratori senza rumore. 
+    Lo scopo di un caso d'uso con questo input \`e la valutazione del funzionamento del software in uno scenario ideale.
+%   \item
+%     Un file audio contenente solo rumore. 
+%     Questo caso di test serve per capire se il software pu\`o rilevare la presenza di respiro in suoni che non contengono alcun respiro. In uno scenario di uso reale corretto questo caso non si verifica ma \`e comunque interessante.
+%   \item
+%     Un file con una frequenza di campionamento molto elevata. 
+%     Questo caso di test rientra nella categoria stress test. 
+%     Ci aspettiamo che il sistema si comporti bene se ha un input file con una frequenza di campionamento molto elevata grazie al filtro di sottocampionamento.
+  \item
+    Un file contenente suoni respiratori sovrapposti a forti suoni cardiaci. 
+  \item
+    Un file contenente suoni respiratori e una apnea pi\`u lunga della soglia massima.
+\end{itemize}
+
+
+In generale possiamo creare un caso di test attraverso la concatenazione di segmenti di file audio ognuno con una possibile configurazione di propriet\`a secondo quanto illustrato nella tabella.
+Non abbiamo a disposizione alcuno stetoscopio per\`o usiamo alcune registrazione reperite online e partiamo da queste per creare alcuni casi di test.

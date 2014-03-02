@@ -1,0 +1,351 @@
+ 
+
+\subsection{\cite{ADFMFPLS}}
+
+\paragraph{algoritmo}
+Questo studio presenta un filtro fuzzy dinamico, con un sistema di feedback interno, che separa i suoni dei polmoni ottenuti da pazienti con patologie polmonari. Questo filtro e' un nuovo modello fuzzy TSK generalizzato, nel quale la conclusione delel regole fuzzy sono delle reti neurali di tipo Block-Diagonal Recurrent. I suoni patologici discontinui accidentali(DAS) sono fortemente correlati alle disfunzioni polmonari. In questo lavoro viene proposta una rete neurale fuzzy ricorrente, per la separazione in tempo reale dei suoni DAS dai suoni normali. La novita' del modello proposto sta nelle conclusioni delle regole fuzzy, che in questo caso sono delle picche reti neurali di tipo block diagonal recurrent. 
+
+Il modello proposto contiene $r$ regole fuzzy di Takagi-Sugeno-Kang ognuna nella forma seguente, per $l\in\{1,\cdots, r\}$:
+
+ \incmargin{1em}
+ \restylealgo{boxed}\linesnumbered
+\begin{algorithm}
+%   \dontprintsemicolon
+%   \SetVline
+  % \SetNoline
+%   \SetKwData{b}{b}
+%   \SetKwData{This}{this}
+%   \SetKwData{Up}{up}
+%   \SetKwFunction{getAverageLocalEnergy}{getAverageLocalEnergy}
+%   \SetKwFunction{getInstantSoundEnergy}{getInstantSoundEnergy}
+%   \SetKwFunction{Write}{write}
+%   \SetKwFunction{Init}{init}
+%   \SetKwFunction{Clear}{clear}
+   \SetKwFunction{Add}{add}
+    \SetKwFunction{BDRNN}{BDRNN}
+\SetKwFunction{Gl}{gl}
+   \SetKwFunction{U}{u}
+   \SetKwFunction{A}{a}
+%   \SetKwInOut{Input}{input}
+%   \SetKwInOut{Output}{output}
+%   \caption{regola di Takagi-Sugeno-Kang}
+%      \Input{A block of filtered sound samples}
+%      \Output{A sequence of boolean}
+      \If{\U{k} == \A{l}}{
+% 	\For{l $\leftarrow$ 1 \KwTo $r$}{
+	  \Gl{k} $\leftarrow$ \BDRNN{l, \U{k}}\;
+% 	}
+      }	
+ \label{fuzzyrecurrenteneuralnetworkrule}
+\end{algorithm}
+ \decmargin{1em}
+
+dove $A(i)$ e' la regione fuzzy nella premessa della regola e il sottomodello $BDRNN(l)$ e' una rete neurale block-diagonal recurrent che implementa la conclusione della regola $l$. Per semplicita', viene usato un modello con piu' input ed un solo output. Basandoci sulle caratteristiche strutturali del modello TSK, puo' essere diviso in tre parti: le premesse, le conseguenze e la parte di defuzzificazione. Ad ogni istante di tempo $k$, le variabili $u_{1}(k), \cdots, u_{m}(k)$ vengono date alle premesse, le quali vengono usate per definire le regioni fuzzy. La definizione precisa delle funzioni $u$ non viene riportata qui. 
+
+Ogni sottomodello $BDRNN(l)$ e' una rete neurale di tipo block-diagonal recurrent che ha due layer, il layer di output e' statico mentre quello di input e' dinamico. Il layer nascosto consiste di una coppia di neuroni(blocks); ci sono delle connessioni di feedback tra i neuroni di ogni coppia che introducono dinamicita' alla rete.
+
+Il DBD-FNN attraversa una fase di training usando l'algoritmo D-FUNCOM. Il filtro DBD-FNN serve per stimanre la parte non stazionaria del segnale di input. La rete opera in parallelo e usa come input il segnale $u(k)$, che e' il suono dei polmoni registrato normalizzato con una zero-mean. Come risultato l'output dei filtri e' una stima dei suoni polmonari discontinui accidentali. 
+
+I suoni respiratori sono divisi in tre categorie: coarse crackles (CC), fine crackles (FC) e squawks (SQ). In questo lavoro viene esaminato solo il primo caso. I suoni sono stati presi dal database\cite{LSAITTIOTAF}. Il segnale attraversa prima un filtro WTST-NST per ottenere una stima accurata delle parti stazionarie e non stazionarie, soltanto la parte non stazionaria viene lasciata.
+% The sounds have been drawn from an international sound database, [7].  The data set has been obtained by digitizing sections of 15sec of the signals from the lung sounds databases by a 12-Bit Analog-to-Digital (A/D) converter at a sampling rate of 2.5kHz, divided into successive records of 1024 or 2048 samples each, with zero mean value and normalized. Then, all these records have been processed by the WTST-NST filter in order to obtain an accurate estimation of their stationary and non-stationary parts. Therefore, the nonstationary output of the WTST-NST filter are considered to be the desired ones.
+
+
+Lo studio prova vari $DBD-FNN$ con differenti caratteristiche strutturali. In aggiunta, vengono testate varie combinazioni dei parametri di apprendimento. Per ogni caso vengono fatti $100$ prove con dei pesi iniziali casuali e viene calcolata la media dei risultati. La scelta del modello e della combinazione dei parametri e' basata sul criterio di una separazione efficacie dei suoni e su una moderata complessita' del modello risultante. L'apprendimento dura $500$ epochs. Si puo' notare che il modello finale comprende tutto lo spazio di input, mentre le funzioni di appartenenza non si sovrappongono in modo considerevole quindi viene preservata l'approccio a modello locale dei sistemi fuzzy Takagi-Sugeno-Kang.
+
+\paragraph{risultati}
+
+Il sistema e' stato testato nel caso di suoni contenti coarse crackles ed ha ottenuto una accuratezza di circa il $96\%$
+
+\subsection{\cite{TLSA}}
+
+Lo scopo di \cite{TLSA} e' quello di sviluppare e integrare diversi processi di trattamento del segnale in un prototipo di toolkit versatlie con lo scopo di supportare studi scientifici sui suoni polmonari in modo non invasivo. Lo studio pilota coinvolge la registrazione di $30$ craclding e $10$ wheezing, che sono usati come dati di base nello sviluppo e nella valutazione di diversi algoritmi di trattamento dei dati. Le registrazioni sono state fatte con due microfoni posizionati sull'aria basare dei polmoni.
+% Two condenser microphones were used for picking up different crackling and wheezing respiratmy sounds. The microphones were placed on each side of the basal areas of the lungs. The sensitivity of the microphones was 12.5 mV Pa -] ( B R U E L and KJAER, 1988a; b). For microphone attachment, we have partly used our own approach, but also utilised some designs used in the testing of hearing aids and microphone/ear implant connections. The acoustically coupled microphone cavity conforms to IEC Standards (IEC, 1973; 1970). This ensures that the resonance frequency of the cavity is well above the highest frequency component considered (4000 Hz). The whole microphone assembly is encased in a hearing protector cup to reduce external noise. Rubber straps were found to be convenient for attachment, although some friction-induced sounds may occur during deep breaths. In our measurement system, heart sound and low-frequency ambient noise may saturate the measurement amplifier. Thus, to
+Per rimuovere i rumori cardiovascolari e i rumori ambientali a bassa frequenza, usiamo un filtro passa alto passivo del terzo ordine con frequenza di soglia pari a $50Hz$. Il guadagno dell'aplificatore e' di solito di $50$ o $60dB$. Il flusso misurato sulla bocca deve essere approssimativamente di un litro al secondo mentre affinche' si possano riconoscere i suoni respiratori nelle regioni basali e deve essere piu' di $0.5\frac{l}{s}$ se il suono e' registraro nella trachea. Queste condizioni vengono garantite attraverso la misura diretta del flusso d'aria.
+% The respiratory rate was 15--20 breaths rain -]. The lung sound signals were recorded on a digital audio tape for later analysis. The measure,meat duration was typically 30 s, An analogue low-pass Bessr filter with a cut-off frequency of 4 kHz and a roll-off of 24 dB oct-~ was used to prevent aliasing during digitisation. The simultaneous sampling provided by the accessory sample and hold board was used to enable dual,channel analysis, where the object of the analysis is the d i f f ~ c e bet'wecn the right and left lung sound signals. The lung sound signals recorded were digitised with a 13-bit A/D convertor, with the sampling f'rcq~eney set at 12 kHz.
+Il rumore interno consiste sopratutto di suoni cardiovascolari a bassa frequenza e suoni prodotti dal movimento dei muscoli respiratori, mentre il rumore esterno e' tipicamente a bassa frequenza ed e' causato dai condizionatori d'aria e dal traffico. Abbiamo studiato una cancellazione del suono adattativa usando l'algoritmo LMS. Un microfono e' stato posizionato vicino al paziente per registrare in modo simultaneo il rumore ambientale, ed e' stato usato come segnale di riferimento nell'adozione di di filtri FIR. Questo studio indica che il rumore esterno interferisce con il segnale solo a frequenze molto basse, minori di $50Hz$ e suggerisce l'uso di filtri digitali passa alto con coefficienti costanti per la rimozione del rumore esterno. Le prestazioni dell'algoritmo di trattamento del segnale dipendono dal rapporto tra il segnale e il rumore.
+
+% 3.1 Basic analysis of lung sounds
+
+Viene usato un filtro digitale passa alto per ridurre ulteriormente il rumore a bassa frequenza, che puo' essere monitorato quando il flusso e' circa zero grazie al fonopneumografo. La frequenza di soglia e' di $75Hz$. Il programma compilato occupa $900kB$ di memoria e richiede $4MB$ di memoria per eseguire in ambiente UNIX. Gli strumenti di base per l'analisi dei suoni respiratori includono la fonopneumografia, l'analisi delle forma d'onda espansa, la spettrografia FFT e il modello autoregressivo(AR). La fonopneumografia mostra il flusso d'aria e il livello del suono, da questa si evince la relazione tra i suoni respiratori e il flusso d'aria. Nell'analisi armonica basata su FFT dei wheezing, usiamo la media pesata con segmenti sovrapposti con una finestra di Hamming per stabilizzare la stima dello spettro di potenza. La finestra rettangolare e' usata l'analisi dei crackle quandp il valore del segnale tende a zero L'utente puo' scegliere il numero di punti nelle FFT consecutive. Segmenti di segnale di 
+durata selezionabile si possono inscrivere in modelli AR di ordine diverso. La scelta dell'ordine e' governata dal criteri di minimizzazione dell'informazione di Akaike. La stima spettrale basata su modelli AR viene calcolata usando il metodo di covarianza modificato. Si puo' ottenere una stampa di segmenti del segnali selezionati a livello di interfaccia utente e il loro spettro FFT o AR. E' necessaria la determinazione di differenti caratteristiche dei suoni respiratori tra il polmone destro e quello sinistro, in situazioni cliniche nelle quali la funzione dei polmoni e' asimmetrica. Sono stati implementati i seguenti indici di asimmetria:
+\begin{itemize}
+  \item 
+    Il rapporto tra energia dei valori RMS nel segmento di segnale nel dominio del tempo.
+  \item
+    Il rapporto di energia dei valori RMS dello spettro FFT.
+  \item
+    Funzione di somiglianza dello spettro FFT che include un indice di somiglianza sullo spettro considerato
+%   \item 
+%     cross-correlation function of signal segments.
+%   \item 
+%     the upper frequencies of power quartiles of the spectra    
+\end{itemize}
+
+
+Abbiamo sviluppato un algoritmo per riconoscere e quantificare i crackle. L'analisi del sonogramma FFT e' fatta attraverso una maschera spaziale $\frac{N}{2} \times 2$ dove $N$ e' la lunghezza della trasformata usata. La maschera si sposta orizzontalmente sull'immagine sonografica. Ad ogni passo la somma delle convoluzioni e' confrontata con una soglia. Se la somma eccede la soglia, allora significa che la maschera ha attraversato un crackle.
+
+ A parameterisation algorithm based on waveform
+analysis and FFT spectrography is used to obtain the following
+parameters after the detection: crackle occurrence rate, end-
+point (EC) and duration (DC) of occurrence (PrIRILA et al.,
+1991), largest deflection width (LDW) (HOEVERSand LOUDON,
+1990), initial deflection width (IDW), 2-cycle duration (2CD)
+(MURPSY et al., 1977; HOLFORD, 1981) and - 2 0 dB band
+width (Figs. 3a and b). The mean value and standard error are
+calculated separately for inspiration and expiration (Table 1).
+These statistics are essential when performing hypothesis
+testing in statistical studies.
+The detection algorithm was validated by studying patients
+with crackling lung sounds (KAISLAet aL, 1991). The average
+sensitivity with respect to two observers was 89\% for patients
+with fibrosing alveolitis (FA) and 80\% for patients with
+bronchiectasis (BE). The average positive predictivity was 88%
+for patients with FA and 83\% for patients with BE. The
+algorithm can also utilise AR spectra in the detection.
+Evaluation studies based on the AR spectra are planned.e
+Similar algorithms based on the FFT and AR sonogram have
+been developed (P/~sJANEN, 1993) to automatically detect and
+quantify wheezing lung sounds. The AR spectral estimates are
+computed using the modified eovariance method applied on
+consecutive signal segments. The order of the model varied
+from 4 to 16. The obtained AR spectra are passed to a peak
+detector, which can be rather simple because of the smooth
+character of the AR. spectra. A threshold value is used to select
+only the highest peaks in each spectrum. A bilevel sonogram is
+then formed by coding the detected peaks as dots (Fig. 4). A
+3 x 3 mask sensitive to horizontal lines is then convolved with
+this sonogram in order to find successions of peaks at the same
+"frequency in sequential spectra. The length of the mask is
+120 ms, which is considered the minimum length of a wheeze.
+The following parameters are obtained: formant frequencies
+FFi and formant durations FDi where i = {1,2,... ,P}. P is
+dependent on the chosen threshold value in the peak detector.
+The mean value and standard error are calculated separately for
+inspiration and expiration (Table 2). The evaluation of different
+parameter settings of the algorithm is currently being worked
+on,
+The WOSA approach in the spectral estimation of the whole
+phase or a fraction of the phase is utilised. The obtained FFT
+spectrum is further averaged over the corresponding signal
+segment of the whole sample. Specifically median freqencies of
+the whole phase or different quartiles are automatically
+obtained from the averaged specmma.
+Automatic classification of a set of known lung sound
+signals was done using Kohonen's self-organising feature map
+(SOld) (KOHONE~, 1984; KALLIO et al., 1991). The feature
+vector was composed by extracting 15 power values from a
+representative set of different lung sound spectra in the
+frequency interval 75-5000 Hz. The pattern recognition
+potential of the SOM is detemained by the number of vectors
+on a plane. The vectors are initially randomised. In this study,
+we used a 7 • 12 matrix. The SOM gradually organises itself
+in the teaching process so that the closest member vector and
+its neighbouts are slighly adjusted towards a known sample
+vector, Closeness of the vectors should be interpreted in the
+sense of the chosen distance meamre, In our application, w e
+use the eaelidian distance measure. After the teaching process,
+every member vector is labelled according to a speeitic group
+of lung sound signals (Fig. 5a). The organhed map is then used
+to classify unknown lung sounds. The euclidean distance
+measures of the feature vector extracted fz~m the unknown
+sound aad the member vectors of the SOM are calculated~ and
+the classification is pcrfurmed according to the closest member
+of the map. The dark areas on the map represent hits of the
+feature vectors. For correct classification, the darkest area in the
+classification map should be at the same location as in the
+teaching map representing the specific lung sound.
+The result of the classification test is shown in Fig. 5b. The
+teaching map represents the organisation of three different
+crackling lung sounds (FA, BE, COPD) and normal lung sound
+(NORM). Each group has different characteristic clustering
+areas with a slight overlap between COPD and BE. In the
+classification of test signals (FAIb, BEIb, COPDlb,
+NORMlb), the clustering areas of the recognition map should
+correspond to those of the teaching map. The bars show the
+sensitivity of the algorithm. The COPDIb risks incorrect
+classification whereas the others are correctly classified.
+We have also performed a comparison of the discriminatory
+potential of the SOM and the discrimination anlaysis in the
+statistical soRware SAS. As input data we used FFT and AR
+spectra obtained from short signal segments (10, 15, 20, 25 ms)
+(RAJALA et aL, 1993; RAJAI~ 1992). The same patient groups
+with crackling lung sounds were used as mentioned above, with
+the addition of expiration and inspiration sounds from healthy
+controls. The feature vectors consisted of 15 power values
+extracted from the FFT spectra in the range 75-5000 Hz or of
+4-16 AR model parameters. Fig. 6 shows the results of the test;
+the smaller bars indicate the sensitivity of the method. AR
+seems to be superior to FFT in discriminatory potential, and
+SOM seems to giw more even results for different signal types
+than discrimination analysis.
+
+
+4 Clinical results
+Th system described was used for hypothesis testing of
+Imrameters of erae,
+kling luag sounds in patients with the
+foUowing diseases: cryptogenie fibrosing alveolitis (FA),
+bmnchieetasis (BE), chronic obstructive pulmonary
+(COPD) and acute heart failure (Pnm~ a a/., 1991). Each
+camgory was r e p ~ d
+by ten individt~. Five breathing
+cycles were selected for analysis. We found that the endpoint of
+crackling was siwaificantly earlier in patients with COPE) than
+in the other p a t ~ groups, aad significantly later in FA than in
+tbe othe~ patient groups. The initial d e t a i n width attd the
+two cycle duration we~ significantly short~ in FA than in the
+other groups. Similarly, the largest deflection width w a s
+signifteantly different between tl~ crackles in FA, BE and
+heart failure. The spectral parameter corrresponding to the
+- 2 0 dB bandwidth was also significantly higher in FA than in
+COPD and heart failure.
+In another study, we used spectrum analysis to differentiate
+between asthmatics and healthy controls in challenge tests
+(MALMBERG et al., 1994). As a result of histamine-induced
+bronchoconstriction, the form of the WOSA-averaged FFT
+spectra changed expressed as increased median frequency
+(F50) in asthmatics, whereas in healthy controls, the spectral
+content did not alter markedly. The change in F50 was
+significantly related to the change in forced expiratory volume
+in ls (FEV1). Thus, the results indicated that during the
+challenge test the degree of bronchial obstruction could be
+estimated by spectral analysis of breath sounds; these findings
+may be clinically applicable.
+
+5.Discussion
+There are several possible approaches to microphone
+(condenser) attachment: vacuum, tape and rubber strap designs.
+Vacuum attachment is based on evacuation of a groove that
+surrounds the air chamber containing the microphone. The
+problem with this construction is that the microphone may be
+damaged if there is a leak between the main air chamber and
+the groove, which may cause an abrupt pressure change. The
+use of two-sided tape keeps the pressure between the skin and
+the microphone assembly constant and is recommendable
+where a light microphone assembly is available. Hand-held
+microphones have been used (CI-tAI~ONN~U et aL, 1983) but,
+according to our experience, this produces extra noise in the
+recording. The use of rubber straps was found to be insensitive
+to movements during breathing and best suited to support our
+microphone assembly. Contact microphones would be prefer-
+able due to their ease of attachment and immediate comet with
+the skirt, but they still seem to be inferior to condenser
+microphones as far as sensitivity and frequency response is
+concerned.
+No standards exist for the microphone placement and
+number. These are determined by the objective of the
+examination or research. For extracting general information,
+we used two microphones to measure peripheral sounds
+dorsally. On the other hand, in asthmatic patient measurements,
+weattach one of the microphones at the sternal manubrium. In
+the localisation of the sound source, an array of microphones
+should be used.
+It is generally agreed that there is little vesicular sound
+energy above 500 Hz. Adventitious sounds contribute mainly
+at frequencies higher than 500 Hz. However, there is less
+agreement concerning the low-frequency content of different
+lung sounds. Frequencies as low as 10 Hz have been reported
+(UR~JHARTet al., 1981). On the other hand, some studies show
+that museuloseeletal sounds are more prevalent than lung
+sounds below 200 Hz (KRAMAN, 1983). Most researchers use
+high-pass fdtration in lung sound mcord.ings (CaAR~ONNEAU
+et al., 1983: KRAM~, 1984; NAT~ and CAPEL, 1974;
+HOLFOm~ 1981), but no standards have been work~ out
+concerning the specification of filtration. In usual rw~fing
+conditions, the ambient noise at low frequencies is so severe
+that high-pass faltering is unavoidable. In our equipment, the
+high-pass eut-offfi~tucncy oftlm FIR falter is usually set at 75
+or 100 Hz. TRis is a compromise we have arrived at
+ampirically. The choice of the cut-off lieque~cy further
+complicates the comparability of measurements between
+different laboratories (KATIt.Aet al., 1991).
+Owing to the nonstationary nature of heart sounds and the
+fact that their precise fi'equency content is unknown, adaptive
+filtming has beea studied using tim EKG signal as a reference
+signal ( I ~ et al., 1986; KAISI~, 1989). More studies are
+required to ~aluate lraeking and stability of adaptive filters to
+find a suitable confignmfion to reject heart sound while
+affecting the lung sounds as littl~as possible.
+
+
+6 Conclusions
+A basic research tool for studying lung sounds has been
+developed. The hardware consists of a measurement unit, a data
+acquisition unit and a workstation. The software consists of
+basic analysis routines, which aid the researcher in documenta-
+tion, visualisation, and parameterisation of lung sound signals.
+Initial studies using the lung sound analyser have been
+accomplished in the area of crackling lung sounds, for
+hypothesis testing of parameters and classification using the
+self-organising feature map and discriminant analyses. In
+comparison with the conventional auscultation, the greatest
+benefit of the toolkit is the simultaneous recording of timing
+and sound intensity characteristics, which enlarges the scope of
+data analysis. In addition, automated parameter or feature
+extraction, implemented in an interactive software, enhances
+statistical hypothesis testing.
+The studies show that the lung sound analyser is a versatile
+tool, which makes it possible for the researcher to use objective
+means in the analysis of lung sounds. The present analyser is
+suitable for scientific studies, with the aim of developing
+parameter sets which characterise specific clinical groupings.
+Further development is needed to improve the user interface of
+the software and the compactness of the hardware. Validation
+studies of different algorithms are also needed before the
+'computer' stethoscope is available in routine clinical ausculta-
+tion.
+
+
+
+
+\subsection{\cite{RSCUCAGMM}}
+\subsection{\cite{ANAAFIORS}}
+\subsection{\cite{KoronaKokar}}
+
+
+
+\subsection{\cite{kandaswamy}}
+\paragraph{input}
+In questo studio vengono analizzati 126 registrazioni di suoni polmonari.
+Queste registrazioni sono state effettuate con soggetti in stato di rilassamento, sotto la supervisione di un medico specializzato.
+I soggetti acelti presentano i tipici casi cronici di insirazione wheezes, crackles fine, stridor, e rantoli, oltre a normali 
+suoni vescicolari.
+In piu vengono considerati anche altri suoni polmonari presi tramite internet, e la frequenza di campionamento \`e 11, 025 Hz in tutti i casi.
+
+\paragraph{algoritmo}
+
+Le registrazioni prese in esame vengono sottoposte a :
+\begin{enumerate}
+      \item 
+      Normalizzazione (denoising)
+      \item
+      Scomposizione Wavelet
+      \item
+      Funzione di estrazione
+      \item
+      Classificazione Rete Neurale Artificiale
+\end{enumerate} 
+
+Nella fase di Normalizzazione, poiche' le bande di frequenza dei rumori posso sovrapporsi ai suoni polmonari, 
+si scegli di usare la tecnica di Wavelet denoising.
+Dopo aver applicato il denoising si proceve con la Scomposizione Wavelet che consiste nell'applicare dei filtri passa-alto e passa-basso:
+Si applica al suono normalizzato un filtro passa-alto, che rappresenta la Wavelet madre e un filtro passa-basso che rappresenta la funzione 
+specchio della precedente. Cosi a scalare andando a prendere come funzione da filtrare la funzione specchio.
+Il numero di livelli di scomposizione viene scelto in base ai componenti di frequenza del segnale dominanti.
+I suoni polmonari non hanno alcun componente di frequenza utile sotto i 50 Hz e si sceglie di usare 7 livelli di scomposizione poiche' nei livelli
+successivi non sarebbero piu inclusi.
+
+Per la classificazione dei suoni polmonari si e' scelto di prelevare i valori medi di ogni coefficiente wavelet di ciascun filtro passa-basso 
+scomposto in precedenza, che consistono in valori medi di distribuzione di frequenza del segnale e quantita' di cambiamenti nella distribuzione di frequenza,
+per poi passarli come parametro alla rete neurale artificiale.
+Le reti neurali artificiali sono formate da cellule che simulano le funzioni di basso livello dei neuroni biologici, 
+devono essere addestrate per regolare i pesi delle connessioni per produrre la mappatura desiderata.
+Uno dei metodi piu' efficienti per l'addestramento delle reti neurali e' l'algoritmo di retropropagazione dell'errore (error backpropagation),
+che consiste nell'apprendimento tramite esempi.
+
+\paragraph{conclusioni}
+Risulta molto efficiente la funzione di Wavelet per l'eliminazione del rumore e l'uso della rete neurale tramite l'algorimo di backpropagation permette di
+riuscire ad individuare i principali sintomi del paziente.
+Sono risultati che possono essere molto utili purtroppo pero' e' necessario un lavoro piu' esaustivo per identificare tutti i tipi dei suoni polmonari e 
+per differenziare le sottocategorie dei principali sintomi. 
+

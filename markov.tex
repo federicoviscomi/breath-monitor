@@ -1,0 +1,113 @@
+\section{Catene di triple Markoviane}
+\label{markov}
+\subsection{Nozioni di base di probabilit\`a}
+
+\paragraph{Evento. Spazio Campionario.}Dato un esperimento casuale, definiamo un evento elementare $\omega$ come uno dei possibili esiti dell'esperimento stesso. Definiamo un evento come un qualsiasi insieme di eventi elementari. Definiamo lo spazio campionario come l'insieme di tutti gli eventi elementari. Uno spazio campionario si indica di solito con il nome $\Omega$.
+
+\paragraph{$\sigma-$algebra}
+Dato un insieme $\Omega$, si definisce $\sigma-$algebra su $\Omega$ una famiglia $F$ di sottoinsiemi di $\Omega$ tale che:
+\begin{itemize}
+  \item 
+    $\Omega$ appartiene ad $F$.
+  \item
+    L'insieme $F$ \`e chiuso rispetto a complementare.
+  \item
+    L'insieme $F$ \`e chiuso rispetto ad unione numerabile.
+\end{itemize}.
+
+\paragraph{Spazio misurabile. Insiemi misurabili.}
+Uno spazio misurabile \`e una coppia $(\Omega, F)$ tale che $F$ \`e una $\sigma-$algebra su $\Omega$. Gli elementi di $F$ sono detti insiemi misurabili in $\Omega$.
+
+\paragraph{Topologia. Spazio topologico.}
+Dato un insieme $X$, una topologia su $X$ \`e un insieme $T$ di sottoinsiemi di $X$ tale che:
+\begin{itemize}
+  \item 
+    L'insieme vuoto e $X$ appartengono a $T$.
+  \item
+    L'unione di una quantit\`a arbitraria di insiemi appartenenti a $T$ appartiene a $T$.
+  \item
+    L'intersezione di un numero finito di insiemi appartenenti a $T$ appartiene a $T$.
+\end{itemize}
+Uno spazio topologico \`e una coppia $(X, T)$, dove $X$ \`e un insieme e $T$ \`e una topologia su $X$. In uno spazio topologico gli insiemi che costituiscono $T$ si dicono aperti in $X$.
+
+\paragraph{Funzione misurabile.}
+Sia $(X,F)$ uno spazio misurabile e $(Y,T)$ uno spazio topologico. Una funzione $f:X\rightarrow Y$ viene detta misurabile se la controimmagine di ogni elemento di $T$ \`e in $F$.
+
+
+\paragraph{Variabile casuale o aleatoria.}
+Sia dato uno spazio campionario $\Omega$ su cui \`e definita una misura di probabilit\`a $\nu$, una variabile casuale \`e una funzione misurabile dallo spazio campionario a uno spazio misurabile. 
+
+
+\paragraph{Processo stocastico.}
+Si definisce processo stocastico una famiglia di variabili aleatorie  
+\[
+  \{X(T)|\; t\in T\subseteq \mathbf{R}^{+}\}
+\]
+dipendenti dal tempo, definite su un unico spazio campione $\Omega$ finito e che assumono valori in un insieme definito spazio degli stati del processo. Un processo stocastico \`e quindi un insieme di funzioni che evolvono nel tempo, ognuna delle quali \`e associata ad un determinato elemento dello spazio campione, cos\`i che il risultato di un esperimento casuale corrisponde di fatto all'estrazione di una di queste funzioni.
+Un processo stocastico discreto \`e un processo stocastico nel quale $T$ \`e un sottoinsieme dei numeri naturali.
+
+
+\subsection{Processo di Markov}
+Un processo stocastico markoviano o processo di Markov \`e un processo stocastico nel quale la probabilit\`a di transizione che determina il passaggio ad uno stato di sistema dipende unicamente dallo stato di sistema immediatamente precedente (propriet\`a di Markov) e non dal come si \`e giunti a tale stato. Formalmente questo pu\`o essere scritto come
+\[P(X_{n+1}\leq x_{n+1} |_{i=1}^{n} X_{i}\leq x_{i}) = P(X_{n+1}\leq x_{n+1} | X_{n}\leq x_{n})\]
+Questa \`e detta propriet\`a di Markov, o condizione di assenza di memoria.
+
+\subsection{Catena di Markov}
+Una catena di Markov \`e un processo di Markov con spazio degli stati discreto, quindi si tratta di un processo stocastico che assume valori in uno spazio discreto e che gode della propriet\`a di Markov. L'insieme  di spazio degli stati pu\`o essere finito o infinito (numerabile). Nel primo caso si parla di catena di Markov a stati finiti. Una catena di Markov pu\`o essere tempo-continua o tempo-discreta, in base all'insieme di appartenenza della variabile tempo (continuo o discreto).
+Formalmente, una catena di Markov \`e una sequenza di variabili aleatorie $X_{1}, X_{2}, \cdots, $ che soddisfa la condizione di Markov.
+
+
+\subsection{Modelli nascosti di Markov}
+
+In un modello nascosto di Markov abbiamo due processi stocastici: il processo di interesse inosservabile $X=(X_{s})_{s\in S}$ e il processo osservabile $Y=(Y_{s})_{s\in S}$. Un modello nascosto di Markov \`e $(X, Y, T, E, \pi)$ tale che:
+\begin{description}
+  \item
+    $T:X\times X\rightarrow [0;1]$ \`e la probabilit\`a di transizione. In particolare 
+    \[	
+      p(X_{t+1}=x_{i}| X_{t}=x_{j})=T(x_{i},x_{j})
+    \] 
+    \`e la probabilit\`a che il processo nascosto passi dallo stato $x_{i}$ allo stato $x_{j}$.
+  \item
+    $E:X\times Y \rightarrow [0;1]$ \`e la probabilit\`a condizionata di $X$ rispetto ad $Y$. Cio\`e se osserviamo un certo valore $y$ per il processo osservabile $Y$ allora $E$ ci dice qual'\`e la probabilit\`a che il processo nascosto assuma certi valori.
+  \item
+    $\pi:X\rightarrow [0;1]$ \`e la probabilit\`a iniziale che il processo nascosto si trovi in un certo stato.
+\end{description}
+
+
+
+
+
+
+\subsection{Catena di coppie markoviane}
+
+
+Supponiamo che $X = (X_{1}, \cdots, X_{n})$ e $Y = (Y_{1}, \cdots, Y_{1})$ siano due processi stocastici, nei quali ogni $X_{i}$ ha valori in un insieme finito $\Omega=\{\omega_{1}, \cdots, \omega_{n}\}$ e ogni $Y_{i}$ ha valori reali. Sia $Z = (Z_{1}, \cdots, Z_{n})$ il processo stocastico delle coppie di $X,Y$, cio\`e $Z_{i}=(X_{i}, Y_{i})$. 
+I processi $X$ e $Y$ sono una catena di coppie markoviane se $Z$ \`e un processo di Markov cio\`e quando 
+\[
+  p(z)=p(z_{1}) p(z_{2}|z_{1}) \cdots p(z_{n}|z_{n-1})
+\]
+
+
+
+\subsection{Catena di triple markoviane}
+
+Le catene di triple markoviane sono una estensione delle catene di coppie di Markov nelle quali la distribuzione di probabilit\`a di $(X,Y)$ \`e una distribuzione di probabilit\`a marginale di una catena di Markov $(X,U,Y)$.
+Anche nelle catene di triple markoviane cerchiamo $X$ a partire da $Y$, il processo $S$ serve solo come aiuto al calcolo. 
+Sia $S=N$ l'insieme dei numeri naturali senza lo zero e siano $X=(X_{n})_{n\in N}$, $Y=(Y_{n})_{n\in N}$, $U=(U_{n})_{n\in N}$ tre processi, nei quali le variabili $X_{i}$ assumono valori in uno spazio campionario $\Omega=\{\omega_{1}, \cdots, \omega_{k}\}$, le variabili $Y_{i}$ sono a valori reali e le variabili $U_{i}$ assumono  
+valori nell'insieme $\Lambda = \{\lambda_{1}, \cdots, \lambda_{m}\}$.
+Con lo scopo di semplificare la notazione, poniamo $T_{n}=(X_{n}, U_{n}, Y_{m})$, $Z_{n}=(X_{n}, Y_{n})$ e $V_{n}=(X_{n}, U_{n})$ e chiamiamo $T,Z$ e $V$ i processi corrispondenti.
+Diremo che $Z$ \`e una catena di triple di Markov se esiste un processo $U$ nel quale $T$ \`e una catena di Markov.
+In questo caso allora $(V,Y)$ \`e una catena di Coppie di Markov. Possiamo scrivere la distribuzione di probabilit\`a di $(V_{i}, Y)$ come 
+\[
+  p(v_{i}, y)=\alpha^{i}(v_{i}) \beta^{i}(v_{i})
+\]
+con $\alpha^{i}(v_{i})$ e $\beta^{i}(v_{i})$ definite rispettivamente come 
+\[
+  \begin{array}{ll}
+      \alpha^{i}(v_{i})=p(y_{1}, \cdots, y_{i-1}, y_{i}, v_{i})
+    &
+      \beta^{i}(v_{i})=p(y_{i+1}, \cdots, y_{n}, v_{i}, y_{i})
+  \end{array}
+\]
+
+

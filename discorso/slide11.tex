@@ -1,0 +1,102 @@
+\section{Slide 11}
+
+\begin{itemize}
+  \item 
+    Isuoni normali che si possono sentire sul petto di un soggetto, vengono generati sopratutto nella parte lobare delle vie respiratorie da turbolenze dell'aria nelle vie respiratorie e dall'attrito tra l'aria e le vie respiratorie.
+%     Le caratteristiche dei suoni sono molto variabili, si possono notare differenze da persona a persona che dipendono dal peso, dall'et\`a, dallo stato di salute e altri fattori. 
+%     I suoni respiratori variano anche rispetto alla densit\`a del gas respirato la quale diminuisce con l'aumentare dell'altitudine rispetto al livello del mare. In generale per\`o l'intensit\`a dei suoni respiratori \`e proporzionale al quadrato del flusso d'aria. 
+%     Lo studio \cite{DOIAERSINTSOTHT} nota che i suoni inspiratori vengono prodotti in modo predominante nella zone periferiche dei polmoni, mentre i suoni espiratori vengono prodotti nelle zone pi\`u centrali.
+  \item
+    L'osservazione chiave \`e quando c\`e una apnea il flusso \`e zero.
+    E quando il flusso \`e zero anche il suono respiratorio \`e nullo.
+\end{itemize}
+% 
+% In generale un sistema che riconosce la respirazione a partire da alcuni segnali fisiologici continui, deve essere sensibile al cambiamento di alcune caratteristiche del segnale che sono omomorfe alla presenza, al volume, al flusso o alla frequenza della respirazione. 
+% Queste caratteristiche sono in generale dipendenti dal contesto quindi ci aspettiamo che un buon algoritmo faccia leva su delle quantit\`a statistiche del segnale o su una qualche forma di apprendimento automatico. 
+% Ci aspettiamo anche che tali caratteristiche rispettino un qualche principio di localit\`a questo perch\'e le propriet\`a della respirazione cambiano molto nel lungo termine.
+
+% \subsection{Meccanismi di persistenza}
+% 
+% Il sistema implementa dei meccanismi di persistenza. Un interfaccia minimale di una componente che implementa un meccanismo di persistenza deve offrire le operazioni seguenti:
+% \begin{itemize}
+%   \item 
+%     Aggiungere i dati di nuovo soggetto.
+%   \item
+%     Aggiungere una entry di dati di un monitoraggio relativa ad un certo soggetto.
+%   \item
+%     Cercare una entry di dati di un monitoraggio a partire dai dati del soggetto e/o dalla data del monitoraggio.
+%   \item
+%     Reperire una entry di dati di un monitoraggio a partide da una chiave cercata in precedenza.
+% \end{itemize}
+% 
+% 
+% I dati persistenti sono: il nome del sogetto, la data, l'indice di apnea-ipopnea e una sequenza di etichette nell'insieme: respiro o pausa respiratoria. Ogni etichetta corrisponde a $4s$ di segnale. 
+% Il sistema permette di salvare i dati di un monitoraggio sulla memoria di massa del computer sotto forma di file. Vengono usati i meccanismi di serializzazione offerti da Java. 
+% La serializzazione di Java permette di memorizzare e leggere uno stream di oggetti Java. 
+% Per ottimizzare questa operazione, i dati vengono memorizzati prima in un buffer, quando il buffer si riempe vengono scritti sulla memoria di massa. 
+% Anche se questa ottimizzazione pu\`o sembrare inutile in quanto tutti i file system moderni sfruttano un meccanismo implicito di buffering, la dimensione di quest'ultimo potrebbe avere un valore predefinito troppo piccolo.
+% 
+% 
+% 
+% 
+% 
+% 
+% \section{Segnale}
+% In generale un segnale \`e una funzione di una o pi\`u variabili che contiene informazioni relative ad un fenomeno fisico. In questo caso ci interessano i segnali sonori che sono delle funzioni dell'ampiezza rispetto al tempo. 
+% I segnali possono essere classificati secondo le seguenti propriet\`a:
+% \begin{description}
+%   \item[Continuit\`a nel tempo]
+%     Un segnale pu\`o essere a tempo continuo o a tempo discreto a seconda che il dominio della funzione sia non numerabile o numerabile.
+%   \item[Continuit\`a nell'ampiezza]
+%     Un segnale pu\`o essere ad ampiezza continua oppure ad ampiezza discreta(o quantizzato) a seconda che l'immagine della funzione sia non numerabile o numerabile.
+%   \item[Periodicit\`a]
+%     Un segnale pu\`o essere periodico se esiste una quantit\`a $T$ nel dominio del tempo tale che per ogni tempo $t$ vale $s(T+t)=s(t)$. Se non vale questa propriet\`a allora il segnale \`e aperiodico. 
+%     Un segnale si dice quasi periodico se \`e composto dalla somma di segnali periodici con diverse frequenze che tra di loro stanno in rapporti non razionali. 
+%   \item[Determinatezza]
+%     Un segnale si dice determinato se \`e perfettamente noto e rappresentabile con una funzione che ne specifica l'andamento in ogni istante invece viene chiamato aleatorio se non \`e completamente noto a priori, ma pu\`o assumere un qualunque andamento entro una classe di funzioni specificata da alcune propriet\`a statistiche.
+%   \item[Stazionareit\`a]
+%     Un segnale stocastico, si dice stazionario se le sue propriet\`a statistiche non cambiano nel tempo, altrimenti si dice non stazionario.
+% \end{description}
+% 
+% 
+% 
+% \section{Denoising}
+% 
+% Uno degli ostacoli principali dell'analisi computerizzata dei suoni polmonari \`e la presenza di rumore nei segnali. 
+% In questo caso per rumore si intendono quei suoni provenienti da strumenti come ventilatore, aria condizionata, e altri rumori ambientali che possono contaminare i segnali sonori del polmone. 
+% La natura rumorosa dei suoni polmonari \`e un fattore di impedimento che vieta l'identificazione di funzioni utili per la diagnostica. 
+% Quindi il denoising di segnali sonori polmonari \`e d'obbligo per l'utilizzo efficace della diagnosi e in questo capitolo approfondiremo le varie tecniche per l'eliminazione dei rumori.
+% 
+% 
+% \paragraph{funzione finestra}
+% Nell'elaborazione numerica dei segnali una funzione finestra \`e una funzione che vale zero al di fuori di un certo intervallo. 
+% Quando un'altra funzione \`e moltiplicata per una funzione finestra, anche il prodotto assume valori nulli al di fuori dell'intervallo. 
+% Una definizione pi\`u generale di funzione finestra non richiede l'annullarsi al di fuori di un intervallo, ma che il prodotto per la funzione di finestra sia una funzione a quadrato sommabile, ovvero che la funzione finestra si annulli in maniera sufficientemente rapida. 
+% Le funzioni finestra sono importanti nel progetto dei filtri nell'analisi spettrale. 
+% 
+% Siano $N$ l'ampiezza in numero di campioni di una finestra (tipicamente una potenza di 2) ed $n$ un numero intero, che assume valori da $0$ ad $N-1$. Ci sono varie funzioni finestre, ad esempio: 
+%   \begin{itemize}
+%     \item 
+%       la finestra rettangolare descritta dall'equazione 
+%       \[
+% 	w(n)=1  
+%       \]
+%     \item
+%       la finestra di Hamming descritta dall'equazione
+%       \[
+% 	w(n)=0.54-0.46 cos \left(\frac{2 \pi n}{N-1}\right)
+%       \]
+%       \`e stata progettata per minimizzare il livello del lobo laterale, mentre mantiene approssimativamente la stessa larghezza del lobo principale.
+%     \item
+%       la finestra di Hann o Hanning descritta dall'equazione:
+%       \[
+% 	w(n)=0.5 cos \left(1-\frac{2 \pi n}{N-1}\right)
+%       \]
+%     \item
+%       la finestra di Blackmann descritta dall'equazione:
+%       \[
+% 	w(n)=\frac{1-0.16}{2} - \frac{1}{2} cos \left(1-\frac{2 \pi n}{N-1}\right) + \frac{0.16}{2} cos \left(\frac{4 \pi n}{N-1}\right)
+%       \]
+%   \end{itemize}
+% 
+% 

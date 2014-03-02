@@ -1,0 +1,4 @@
+% disegna il grafico tempo/ampiezza di un file .wav
+
+[Y, FS, BITS]=wavread('tesi/Normal vesicular.wav');
+

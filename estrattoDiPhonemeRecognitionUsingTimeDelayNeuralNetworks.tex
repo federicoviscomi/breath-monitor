@@ -1,0 +1,191 @@
+\chapter{Phoneme Recognition Using Time Delay Neural Networks}
+Per essere utile per il riconoscimento vocale, una rete neurale feedforward deve avere un certo numero di proprieta'.
+Primo, deve avere piu' livelli e un numero sufficiente di interconnessioni tra le unita' in ogni livello.
+Questo per assicurasi che la rete neurale avra' l'abilita' di imparare superfici di decisione complesse non lineari.
+Secondo, la rete deve avere l'abilita' di rappresentare relazioni tra gli eventi nel tempo.
+Questi evento possono essere coefficienti spettrali ma possono essere anche il risultato di elaborazioni di aspetti piu' di alto livello.
+Terzo, gli aspetti e le astrazioni imparate dalla rete neurale dovrebbero essere invarianti per traslazione nel tempo.
+Quarto, la procedura di apprendimento non dovrebbe richiedere un allineamento temporale preciso delle etichette che si devono imparare.
+Quinto, il numero di pesi nella rete dovrebbe essere sufficientemente piccolo in confronto alla quantita' di dati di allenamento cosi' che la rete deve codificare l'allenamento attraverso l'estrazione di regolarita'
+Nel seguito descriviamo una architettura di una TDNN che soddisfa tutti questi criteri ed e' progettata esplicitamente per il riconoscimento dei fonemi, in particolare i voiced stops B D e G.
+L'unita' di base usata in molte reti neurali calcola la somma pesata dei suoni input e dopo passa questa somma attraverso una funzione non lineare, di solito una soglia o una funzione sigmoide.
+Nella nostra RDNN, questa unita' di base e' modificata introducendo ritardi da $D_{1}$ a $D_{n}$.
+I $J$ input di questa unita' vengono poi moltiplicati da molti pesi, uno per ogni ritardo e uno per ogni inpit non ritardato.
+Per $N=2$ e $J=16$, per esempio, c'e' bisogni di $48$ pesi per calcolare la somma pesata dei $16$ inputs, con ogni input misurato in tre punti diversi nel tempo.
+In questo modo, una unita' di TDNN ha l'abilita' di relazionare e di confrontare l'input corrente con gli eventi passati.
+La funzione sigmoide F e' stata scelta non lineare per via delle sue proprieta' matematiche.
+Per il riconoscimento dei fonemi viene costruita una rete a tre livelli.
+L'input della rete sono 16 coefficienti spettrari normalizzati ?melscale?.
+Il segnale vocale, campionato a $12kHz$, passa attraverso una finestra di Hamming e una trasformata discreta di fourier di $256$ punti ogni $5ms$.
+Ogni coefficiente melscale e' dato dal logaritmo dell'energia in una certa banda di energia melscale, nella quale coefficienti adiacenti nelle frequenze si sovrappongono di un campione spettrale e vengono smoothed attraverso la riduzione dei frequenzi cnodivisi del $50\%$.
+Coefficienti adiacenti nel tempo vengono collassati per essere ridotti ulteriormente in una frame rate di $10ms$.
+Tutti i coefficienti di un token di input(in questo caso $15$ frames vocail centrati attorno l'onset delle vocali etichettato a mano)
+Questo si puo realizzare attraverso la sottrazione da ogni coefficiente della energia media dei coefficienti calcolata su tutte le $15$ frame di un token di input e poi normalizzare ogni coefficiente per stare tra $-1$ e $1$.
+Tutti i token nel nostro database vengono trattati nello stesso modo.
+% Fig. 2 shows the resulting coefficients for the speech token “BA” as input to the network, where positive values are shown as black squares and negative values as gray squares.
+
+This input layer is then fully interconnected to a layer of 8 time-delay hidden units, where J = 16 and N = 2 (i.e., 16 coefficients over 3 frames with time delay 0, 1, and 2). 
+An alternative way of seeing this is depicted in Fig. 2. 
+It shows the inputs to these time-delay units expanded out spatially into a 3 frame window, which is passed over the input spectrogram. 
+Each unit in the first hidden layer now receives input (via 48 weighted connections) from the coefficients in the 3 frame window. 
+The particular choice of 3 frames (30 ms) was motivated by earlier studies [26]-[29] that suggest that a 30 ms window might be sufficient to represent low level acoustic-pho netic events for stop consonant recognition. 
+It was also the optimal choice among a number of alternative designs evaluated by Lang [21] on a similar task. 
+In the second hidden layer, each of 3 TDNN units looks at a 5 frame window of activity levels in hidden layer 1 (i.e., J = 8 , N = 4). 
+The choice of a larger 5 frame window in this layer was motivated by the intuition that higher level units should learn to make decisions over a wider range in time based on more local abstractions at lower levels.
+Finally, the output is obtained by integrating (summing) the evidence from each of the 3 units in hidden layer 2 over time and connecting it to its pertinent output unit (shown in Fig. 2 over 9 frames for the “B” output unit). 
+In practice, this summation is implemented simply as another nonlinear (sigmoid function is applied here as well) TDNN unit which has fixed equal weights to a row of unit firings over time in hidden layer 2.4.
+When the TDNN has learned its internal representation, it performs recognition by passing input speech over the TDNN units.
+In terms of the illustration of Fig. 2, this is equivalent to passing the time-delay windows over the lower level units’ firing pattern. 
+At the lowest level, these firing patterns simply consist of the sensory input, i.e., the spectral coefficients.
+Each TDNN unit outlined in this section has the ability to encode temporal relationships within the range of the N delays. 
+Higher layers can attend to larger time spans, so local short duration features will be formed at the lower layer and more complex longer duration features at the higher layer. 
+The learning procedure ensures that each of the units in each layer has its weights adjusted in a way that improves the network’s overall performance.
+
+
+
+B. Learning in a TDNN
+Several learning techniques exist for optimization of neural networks [l], [2], [30]. 
+For the present network, we adopt the Backpropagation Learning Procedure, Mathematically, backpropagation is gradient descent  of the mean-squared error as a function of the weights.
+The procedure performs two passes through the network. 
+During the forward pass, an input pattern is applied to the network with its current connection strengths (initially small random weights). 
+The outputs of all the units at each  level are computed starting at the input layer and working forward to the output layer. 
+The output is then compared  to the desired output and its error calculated. 
+During the  backward pass, the derivative of this error is then propagated back through the network, and all the weights are adjusted so as to decrease the error. 
+This is repeated many times for all the training tokens until the network converges to producing the desired output. 
+In the previous section, we described a method of expressing temporal structure in a TDNN and contrasted this method to training a network on a static input pattern(spectrogram), which results in shift sensitive networks (i.e., poor performance for slightly misaligned input patterns) as well as less crisp decision making in the units of the network (caused by misaligned tokens during training). 
+To achieve the desired learning behavior, we need to  ensure that the network is exposed to sequences of patterns and that it is allowed (or encouraged) to learn about the most powerful cues and sequences of cues among them. 
+Conceptually, the backpropagation procedure is applied to speech patterns that are stepped through in time. 
+An equivalent way of achieving this result is to use a spatially expanded input pattern, i.e., a spectrogram plus some constraints on the weights. 
+Each collection of TDNN units described above is duplicated for each one frame shift in time. 
+In this way, the whole history of activities is available at once. 
+Since the shifted copies of the TDNN units are mere duplicates and are to look for the same acoustic event, the weights of the corresponding connections in the time shifted copies must be constrained to be the same. 
+To implement this, we first apply the regular backpropagation forward and backward pass to all time-shifted copies as if they were separate events. 
+This yields different error derivatives for corresponding (time shifted) connections. 
+Rather than changing the weights on time-shifted connections separately, however, we actually update each weight on corresponding connections by the same value, namely by the average of all corresponding time-delayed weight changes.6 Fig. 2 illustrates this by showing in each layer only two connections that  are linked ,fo(constrained to have the same value as) their time-shifted neighbors. 
+Of course, this applies to all con-nections and all time shifts. In this way, the network is forced to discover useful acoustic phonetic features in the input, regardless of when in time they actually occurred. 
+This is an important property, as it makes the network independent of error-prone preprocessing algorithms that otherwise would be needed for time alignment and/or segmentation.
+In Section IV-C, we will show examples of grossly misaligned patterns that are properly recognized due to this property.
+The procedure described here is computationally rather expensive, due to the many iterations necessary for learning a complex multidimensional weight space and the number of learning samples.
+In our case, about 800 learning samples were used, and between 20000 and 50 000 iterations of the backpropagation loop were run over all training samples. 
+Two steps were taken to perform learning within reasonable time.
+First, we have implemented our learning procedure in C and Fortran on a 4 processor Alliant supercomputer. 
+The speed of learning can be improved considerably by computing the forward and backward sweeps for several different training samples in parallel on different processors. 
+Further improvements can be gained by vectorizing operations and possibly assembly coding the innermost loop. 
+Our present implementation achieves about a factor of 9 speedup over a VAX 8600, but still leaves room for further improvements (Lang [2 13, for example, reports a speedup of a factor of 120 over a VAXl1/780 for an implementation running on a Convex supercomputer). 
+The second step taken toward improving learning time is given by a staged learning strategy. 
+In this approach, we start optimizing the network based on 3 prototypical training tokens only.
+In this case, convergence is achieved rapidly, but the network will have learned a representation that generalizes poorly to new and different patterns. 
+Once convergence is achieved, the network is presented with approximately twice the number of tokens and learning continues until convergence.
+Fig. 3 shows the progress during a typical learning run.
+The measured error is 1/2 the squared error of all the output units, normalized for the number of training tokens. 
+In this run, the number of training tokens used were 3, 6, 9, 24, 99, 249, and 780. 
+As can be seen from Fig. 3, the error briefly jumps up every time more variability is introduced by way of more training data. 
+The network is then forced to improve its representation to discover clues that generalize better and to deemphasize those that turn out to be merely irrelevant idiosyncracies of a limited sample set. 
+Using the full training set of 780 tokens, this particular run was continued until iteration 35 000 (Fig. 3 shows the learning curve only up to 15 000 iterations).
+With this full training set, small learning steps have to be taken and learning progresses slowly. 
+In this case, a step size of 0.002 and a momentum [5] of 0.1 was used. 
+The staged learning approach was found to be useful to move the weights of the network rapidly into the neighborhood of a reasonable
+solution, before the rather slow fine tuning over all training tokens begins.
+Despite these speedups, learning runs still take in the order of several days. 
+A number of programming tricks 1211 as well as modifications to the learning procedure [3 11 are not implemented yet and could yield another factor of 10 or more in learning time reduction. 
+It is important to note, however, that the amount of computation considered here is necessary only for learning of a TDNN and not for recognition. 
+Recognition can easily be performed in better than real time on a workstation or personal computer. 
+The simple structure makes TDNN’s also well suited for standardized VLSI implementation. 
+The detailed knowledge could be learned ‘‘off-line” using substantial computing power and then downloaded in the form of weights onto a real-time production network.
+
+
+
+111. RECOGNITION EXPERIMENT
+
+We now turn to an experimental evaluation of the TDNN’s recognition performance. 
+In particular, we would like to compare the TDNN’s performance to the performance of the currently most popular recognition method: Hidden Markov Models (HMM). 
+For the performance evaluation reported here, we have chosen the best of a number of HMM’s developed in our laboratory. 
+Several other HMM-based variations and models have been tried in an effort to optimize our HMM, but we make no claim that an exhaustive evaluation of all HMM-based techniques was accomplished. 
+We should also point out that the experiments reported here were aimed at evaluating two different recognition philosophies. 
+Each recognition method was therefore implemented and optimized using its preferred representation of the speech signal, i.e., a representation that is well suited and most commonly used for the method evaluated. 
+Evaluation of both methods was of course carried out using the same speech input data, but we caution the reader that due to the differences in representation, the exact contribution to overall performance of the recognition strategy as opposed to its signal representation is not known. 
+It is conceivable that improved front end processing might lead to further performance improvements for either technique. 
+In the following sections, we will start by introducing the best of our Hidden Markov Models. 
+We then describe the experimental conditions and the database used for performance evaluation and conclude with the performance results achieved by our TDNN and HMM.
+
+
+A . A Hidden Markov Model (HMM)for Phoneme Recognition
+
+
+HMM’s are currently the most successful and promising approach 1321-[34] in speech recognition as they have been successfully applied to the whole range of recognition tasks. 
+Excellent performance was achieved at all levels from the phonemic level 1351-[38] to word recognition [39], [34] and to continuous speech recognition 1401. 
+The success of HMM’s is partially due to their ability to cope with the variability in speech by means of stochastic modeling. In this section, we describe an HMM developed in our laboratory that was aimed at phoneme recognition, more specifically the voiced stops “B,” “D,” and “G.”
+The model described was the best of a number of alternate designs developed in our laboratory [23], 1241.
+The acoustic front end for Hidden Markov Modeling is typically a vector quantizer that classifies sequences of short-time spectra. 
+Such a representation was chosen as it is highly effective for HMM-based recognizers 1401.
+Input speech was sampled at 12 kHz, preemphasized by ( 1 - 0.97 z - ’ ) , and windowed using a 256-point Hamming window every 3 ms. 
+Then a 12-order LPC analysis was carried out. 
+A codebook of 256 LPC spectrum envelopes was generated from 2 16 phonetically balanced words. 
+The Weighted Likelihood Ratio [41], 1421 augmented with power values (PWLR) [43], 1421 was used as LPC distance measure for vector quantization.
+A fairly standard HMM was adopted in this paper as shown in Fig. 4. 
+It has four states and six transitions and was found to be the best of a series of alternate models tried in our laboratory. 
+These included models with two, three, four, and five states and with tied arcs and null arcs 1231, 1241.
+The HMM probability values were trained using vector sequences of phonemes according to the forward-backward algorithm 1321. 
+The vector sequences for “B,” “D,” and “G” include a consonant part and five frames of the following vowel. 
+This is to model important transient information, such as formant movement, and has lead to improvements over context insensitive models [23], 1241. 
+Again, variations on these parameters have been tried for the discrimination of these three voiced stop consonants. 
+In particular, we have used 10 and 15 frames (i.e., 30 and 45 ms) of the following vowel in a 5 state HMM, but no performance improvements over the model described were obtained.
+The HMM was trained using about 250 phoneme tokens of vector sequences per speaker and phoneme (see details of the training database below). 
+Fig. 5 shows for a typical training run the average log probability normalized by the number of frames. 
+Training was continued until the increase of the average log probability between iterations became less than 2 *
+Typically, about 10-20 learning iterations are required for 256 tokens. 
+A training run takes about 1 h on a VAX 8700. 
+Floor vaiues’ were set on the output probabilities to avoid errors caused by zero probabilities. 
+We have experimented with composite models, which were trained using a combination of context-independent and context dependent probability values as suggested by Schwartz et al. [35], [36]. 
+In our case, no significant improvements were attained.
+
+
+B. Experimental Conditions
+
+For performance evaluation, we have used a large vocabulary database of 5240 common Japanese words [44].
+These words were uttered in isolation by three male native Japanese speakers (MAU, MHT, and MNM, all professional announcers) in the order they appear in a Japanese dictionary. 
+All utterances were recorded in a sound-proof booth and digitized at a 12 kHz sampling rate. The database was then split into a training set (the even numbered files as derived from the recording order) and a testing set(the odd numbered files). 
+A given speaker’s training and testing data, therefore, consisted of 2620 utterances each, from which the actual phonetic tokens were extracted.
+The phoneme recognition task chosen for this experiment was the recognition of the voiced stops, i.e., the phonemes “B,” “D,” and “G.” The actual tokens were extracted from the utterances using manually selected acoustic-phonetic labels provided with the database [44].
+For speaker MAU, for example, a total of 219 “B’s,” 203 “D’s,” and 260 “G’s” were extracted from the training and 227 “B’s,” 179 “D’s,” and 252 “G’s,’’ from the testing data. 
+Both recognition schemes, the TDNN’s and the HMM’s, were trained and tested speaker dependently. 
+Thus, in both cases, separate networks were trained for each speaker.
+In our database, no preselection of tokens was performed. 
+All tokens labeled as one of the three voiced stops were included. 
+It is important to note that since the consonant tokens were extracted from entire utterances and not read in isolation, a significant amount of phonetic variability exists. 
+Foremost, there is the variability introduced by the phonetic context out of which a token is extracted. 
+The actual signal of a “BA” will therefore look significantly different from a “BI” and so on. Second, the position of a phonemic token within the utterance introduces additional variability. 
+In Japanese, for example, a “G” is nasalized, when it occurs embedded in an utterance, but not in utterance initial position. 
+Both of our recognition algorithms are only given the phonemic identity of a token and must find their own ways of representing the fine variations of speech.
+
+C. result
+
+Table I shows the results from the recognition experiments described above as obtained from the testing data.
+As can be seen, for all three speakers, the TDNN yields considerably higher performance than our HMM. 
+Averaged over all three speakers, the error rate is reduced from 6.3 to 1.5 percent-a more than fourfold reduction in error.
+While it is particularly important here to base performance evaluation on testing data,’ a few observations can be made from recognition runs over the training data.
+For the training data set, recognition error rates were: 99.6 percent (MAU), 99.7 percent (MHT) , and 99.7 percent (MNM) for the TDNN, and 96.9 percent (MAU), 99.1 percent (MHT), and 95.7 percent (MNM) for the HMM.
+Comparison of these results to those from the testing data in Table I indicates that both methods achieved good generalization from the training set to unknown data. 
+The data also suggest that better classification rather than better generalization might be the cause of the TDNN’s better performance shown in Table I.
+Figs. 6- 11 show scatter plots of the recognition outcome for the test data for speaker MAU, using the HMM and the TDNN. For the HMM (see Figs. 6-8), the log probability of the next best matching incorrect token is plotted against the log probability” of the correct token, e.g., “B,” “D,” and “G.” In Figs. 9-11, the activation levels from the TDNN’s output units are plotted in the same fashion. 
+Note that these plots are not easily comparable, as the two recognition methods have been trained in quite different ways. 
+They do, however, represent the
+
+
+V. CONCLUSIOND SUMMARY AN
+In this paper we have presented a Time-Delay Neural Network (TDNN) approach to phoneme recognition. 
+We have shown that this TDNN has two desirable properties related to the dynamic structure of speech. 
+First, it can learn the temporal structure of acoustic events and the temporal relationships between such events. 
+Second, it is translation invariant, that is, the features learned by the network are insensitive to shifts in time. 
+Examples demonstrate that the network was indeed able to learn acoustic-phonetic features, such as formant movements and segmentation, and use them effectively as internal abstractions of speech.
+The TDNN presented here has two hidden layers and has the ability to learn complex nonlinear decision surfaces. 
+This could be seen from the network’s ability to use alternate internal representations and trading relations among lower level acoustic-phonetic features, in order to arrive robustly at the correct final decision.
+Such alternate representations have been particularly useful for representing tokens that vary considerably from each other due to their different phonetic environment or their position within the original speech utterance.
+Finally, we have evaluated the TDNN on the recognition of three acoustically similar phonemes, the voiced stops “B,” “D,” and “G.” 
+In extensive performance evaluation over testing data from three speakers, the TDNN achieved an average recognition score of 98.5 percent. 
+For comparison, we have applied various Hidden Markov Models to the same task and only been able to recognize 93.7 percent of the tokens correctly. 
+We would like to note that many variations of HMM’s have been attempted, and many more variations of both HMM’s and TDNN’s are conceivable. 
+Some of these variations could potentially lead to significant improvements over the results reported in this study. 
+Our goal here is to present TDNN’s as a new and successful approach for speech recognition. 
+Their power lies in their ability to develop shiftinvariant internal abstractions of speech and to use them in trading relations for making optimal decisions. 
+This holds significant promise for speech recognition in general, as it could help overcome the representational weaknesses of speech recognition systems faced with the uncertainty and variability in real-life signals.

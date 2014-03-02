@@ -1,0 +1,22 @@
+\section{Slide 12 Estrarre i suoni respiratori dal segnale}
+	Il segnale attraversa la successione di fasi a cascata rappresentate nella figura. 
+	Ogni filtro \`e implementato in modo simile a quanto specificato dall'interfaccia $InputStream$ di Java. 
+	Siamo davanti ad un tipico caso di design di tipo \emph{pipeline} in quanto l'output di un filtro \`e l'input del filtro successivo(eccetto che per l'ultimo filtro). 
+	Il segnale audio, anche nel caso in cui venga letto da un file, \`e trattato come uno \emph{stream} di dati. 
+	Pi\`u in dettaglio le fasi di filtraggio sono le seguenti:
+      \paragraph{$Buffering/Windowind$}
+	Questa fase \`e necessaria in quanto alcuni dei filtri successivi lavorano su blocchi di input e non sul singolo campione. 
+	Inoltre la presenza del buffer pu\`o diminuire il tempo totale di elaborazione.
+% 	In questo caso l'input \`e letto da un file quindi non ci sono problemi di overflow.
+% 	Una condizione sufficiente affinch\`e il software rispetti i propri requisiti real time \`e che la velocit\`a di elaborazione sia sempre maggiore di: un secondo di segnale fratto un secondo di tempo di elaborazione. 
+      \paragraph{$Downsampling$}
+	La sequenza di campionamento viene ridotta con lo scopo di aumentare l'efficienza delle fasi successive dell'algoritmo. 
+	Gli spettri di potenza dei suoni respiratori e dei suoni cardiaci hanno frequenze al di sotto dei $500Hz$. 
+	Quindi si pu\`o abbassare la frequenza di campionamento a $1000Hz$ in quanto una larghezza di banda di $500Hz$ \`e adeguata a catturare i suoni respiratori
+      \paragraph{$Bandpass filtering$}
+	Questo filtro lascia passare solo i suoni che si trovano nella banda di frequenza dai $100$ ai $1500Hz$, il risultato \`e un suono nel quale sono pi\`u facilmente distinguibili i suoni normali della respirazione. 
+	Inoltre questo filtro elimina anche alcuni suoni respiratori anormali e parte dei suoni cardiocircolatori.
+      \paragraph{$Magnitude filtering$}
+	Questo filtro semplicemente prende il valore assoluto del segnale.
+      \paragraph{$Median filtergin$}
+	Questo \`e un classico filtro a mediana con finestra rettangolare di dimensione $10ms$ e serve per smorzare i suoni accidentali che hanno una intensit\`a relativamente alta rispetto al suono respiratorio e una durata relativamente bassa rispetto alla durata delle fasi respiratorie.

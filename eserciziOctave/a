@@ -1,0 +1,4 @@
+for i=1:2^5
+ sleep(0.5);
+  n=512; wc=zeros(1,n); wc(i)=1; xc=IWT_PO(wc,1,qmf); plot(x,xc);
+endfor

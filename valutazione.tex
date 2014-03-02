@@ -1,0 +1,243 @@
+\chapter{Test}
+\label{valutazione}
+
+% Per poter realizzare un sistema ottimale per il riconoscimento dell'apnea notturna tramite monitoraggio attraverso uno stetoscopio elettronico bisogna tener conto di alcuni requisiti essenziali del programma.
+% Oltre a una verifica del software per assicurarsi che sia corretto e affidabile e altre verifiche come la complessit\`a computazionale e l'utilizzo del processore sono molto importanti dei test valutativi per verificare l'effettiva efficienza del sistema.
+
+\section{Scelta dei casi di test}
+
+Per la scelta dei casi di test usiamo un approccio di tipo black-box e quindi esaminiamo da prima lo spazio dell'input e poi i possibili scenari di uso. 
+Il tipo dell'input \`e l'insieme di tutti i possibili segnali audio di durata arbitraria.
+Lo spazio dell'input \`e un sottoinsieme del tipo dell'input nel quale rientrano tutti i segnali audio che possono essere ascoltati da uno stetoscopio elettronico posizionato sul petto di un soggetto.
+
+    \`E possibile individuare alcune classi di suoni nello spazio dell'input in base alle sorgenti:
+    \begin{center}
+    \begin{tikzpicture}
+    %   [scale=.8,auto=left,every node/.style={fill=blue!20}]
+    [->,>=stealth',shorten >=1pt,auto,node distance=3cm,
+      thick,main node/.style={circle,fill=blue!20,draw,font=\sffamily\Large\bfseries}]
+      \node (sorgente) at (0,3) {sorgente};
+    
+      \node (interna) at (4,1.5) {interna al corpo};
+      \node (esterna) at (4,4) {esterna al corpo};
+    
+      \node (n1n1n1) at (9,0) {respiratoria};
+      \node (n1n1n2) at (9,0.5) {muscolare};
+      \node (n1n1n3) at (9,1) {gastrointestinale};
+      \node (n1n1n4) at (9,1.5) {deglutitoria};
+      \node (n1n1n5) at (9,2) {vocale};
+      \node (n1n1n6) at (9,2.5) {cardiocircolatoria};
+    
+      \node (n2n1n3) at (9,3.5) {$\vdots$};
+      \node (n2n1n2) at (9,4) {voci di persone};
+      \node (n2n1n1) at (9,4.5) {traffico veicolare};
+      
+    
+      \foreach \from/\to in {
+	  sorgente/interna,sorgente/esterna,
+	  interna/n1n1n1,interna/n1n1n2,interna/n1n1n3,interna/n1n1n4,interna/n1n1n5,interna/n1n1n6,
+	  esterna/n2n1n1,esterna/n2n1n2,esterna/n2n1n3}
+	\draw (\from) -- (\to);
+    
+    \end{tikzpicture}
+    \end{center}
+
+
+Alcuni casi di test ci vengono dati dai possibili valori che pu\`o avere l'input in uno scenario di uso reale del software. Ad esempio alcuni casi di test possono avere come input:
+\begin{itemize}
+  \item
+    Un file audio abbastanza lungo da simulare un monitoraggio del sonno reale. Lo scopo di un caso d'uso con questo input \`e la valutazione della velocit\`a a lungo termine dell'algoritmo.
+  \item
+    Dei suoni respiratori sovrapposti a rumore di vari tipo ed intensit\`a. Lo scopo di un caso d'uso con questo input \`e la valutazione della tolleranza al rumore.
+  \item
+    Suoni respiratori senza rumore. Lo scopo di un caso d'uso con questo input \`e la valutazione del funzionamento del software in uno scenario ideale.
+  \item
+    Un file audio contenente solo rumore. Questo caso di test serve per capire se il software pu\`o rilevare la presenza di respiro in suoni che non contengono alcun respiro. In uno scenario di uso reale corretto questo caso non si verifica ma \`e comunque interessante.
+  \item
+    Un file con una frequenza di campionamento molto elevata. Questo caso di test rientra nella categoria stress test. Ci aspettiamo che il sistema si comporti bene se ha un input file con una frequenza di campionamento molto elevata grazie al filtro di sottocampionamento.
+  \item
+    Un file contenente suoni respiratori sovrapposti a forti suoni cardiaci. 
+  \item
+    Un file respiratorio contente una apnea pi\`u lunga della soglia massima.
+\end{itemize}
+
+Per creare dei casi che valutano la resistenza al rumore si pu\`o procedere nel modo illustrato nella figura \ref{mix} e cio\`e:
+\begin{enumerate}
+  \item 
+    Scegliere una file contenente una sorgente di rumore e scegliere una intensit\`a della sorgente di rumore.
+  \item
+    Filtrare il file di rumore in base ad un certo modello acustico del corpo. Cio\`e cercare di prevedere cosa lo stetoscopio sente se \`e presente la sorgente di rumore scelta. Questo modello acustico \`e necessariamente un modello approssimato. In una prima fase elementare di modellazione possiamo usare un semplice filtro attenuatore e supporre che il rumore sia di tipo additivo.
+  \item
+    Scegliere un file contente un respiro.
+  \item
+    Fare un mix dei file.
+\end{enumerate}
+
+
+\begin{center}
+\begin{figure}
+\centering
+\begin{tikzpicture}[scale=2,->,>=stealth',shorten >=1pt,auto, thick,nodes={draw, ultra thick, fill=none}]
+      
+      \node[draw=none] (respiro) at (0,1) {respiro};
+      \node[draw=none] (rumore) at (0,0) {rumore};
+
+      \node[rectangle] (attenuatore) at (2,0) {filtro attenuatore};
+      \node[rectangle] (somma) at (2,1) {+};
+
+      \node[draw=none] (output) at (4,1) {output};
+
+
+
+  \foreach \from/\to in {respiro/somma, rumore/attenuatore, attenuatore/somma, somma/output}
+     \draw (\from) -- (\to);
+
+\end{tikzpicture}
+  \caption{Processo di aggiunta del rumore}
+\label{mix}
+\end{figure}
+\end{center}
+
+
+
+Arriva in nostro aiuto il software open source Audacity \cite{audacity} il quale offre una vasta gamma di funzioni di trattamento dell'audio digitale. Quelle utili per i casi di test sono: 
+\begin{itemize}
+  \item
+    Aggiungere rumore di vari tipi (bianco, rosa e marrone) e con varia intensit\`a.
+  \item
+    Aggiungere segmenti di silenzio di lunghezza a scelta nei file audio e quindi simulare la presenza di una apnea lunga.
+  \item
+    Concatenare file audio. Questa funzione \`e utile perch\'e i file audio che abbiamo a disposizione reperiti da \cite{SoundRepositories} sono di lunghezza troppo breve (minore di $15s$).
+  \item
+    Applicare filtri di vario tipo tra i quali un filtro attenuatore.
+\end{itemize}
+
+
+In generale possiamo creare un caso di test attraverso la concatenazione di segmenti di file audio. Ogni segmento contiene una pausa respiratoria sovrapposta ad un rumore oppure un respiro sovrapposto ad un rumore. La tabella seguente riassume le propriet\`a di un segmento di base:
+\begin{center}
+  \begin{table}[!h]
+    \centering
+    \begin{tabular}{p{0.15\textwidth} | p{0.5\textwidth} l}
+      \hline
+	  contenuto
+	& 
+	  tipo o sorgente
+	& 
+	  itensit\`a
+      \\\hline\\
+	  respiro
+	& 
+	  [normale anormale misto, bronchiale vescicolare, continuo discontinuo, ronchi wheeze stridor crackles squawks]
+	& 
+	  [0-10]
+      \\
+	  rumori
+	& 
+	  [bianco rosa marrone, interno esterno, gastrointestinale deglutitorio vocale, ecc..]
+	& 
+	  [0-10]
+      \\
+	  pausa respiratoria
+	& 
+	  -
+	& 
+	  -
+      \\\hline
+    \end{tabular}
+    \caption{Propriet\`a di un segmento di base.}
+    \label{segmentodibase}
+  \end{table}
+\end{center}
+
+
+Non abbiamo a disposizione alcuno stetoscopio per\`o usiamo le registrazioni reperite da \cite{SoundRepositories} e partiamo da queste per creare alcuni casi di test.
+Purtroppo le fonti non riportano i dettagli di come sono stati registrati i suoni. 
+
+
+\section{Valutazione dell'output}
+\label{valutareOutput}
+\paragraph{Valutare la localizzazione delle fasi respiratorie.}
+Se si vuole valutare un algoritmo che localizza nel tempo le fasi respiratorie allora pensiamo ad un suono respiratorio come ad una sequenza di cicli respiratori e ad  un ciclo respiratorio come una fase di inspirazione seguita da una fase di espirazione seguita da una pausa. 
+
+Quindi lo spazio di input \`e classificabile in sequenze crescenti di numeri razionali che indicano la posizione temporale dell'inizio di ciascuna fase. L'output dell'algoritmo sar\`a una sequenza di numeri razionali che indicano la localizzazione temporale dell'inizio di ciascuna fase. 
+Definiamo la differenza tra l'output e il descrittore della classe di cui fa parte l'input come la sequenza dei valori assoluti delle differenze delle singole componenti. 
+La qualit\`a dell'algoritmo si pu\`o misurare in termini di qualche propriet\`a statistica di questa differenza, ad esempio la media.
+
+
+\paragraph{Valutare la localizzazione delle apnee.}
+Se si vuole valutare un algoritmo che riconosce la presenza di una apnea allora possiamo classificare lo spazio dell'input in sequenze di coppie di numeri razionali tali che ogni coppia contiene il tempo di inizio e il tempo di fine di una apnea. In tal caso anche l'output sar\`a una sequenza di coppie di numeri razionali. 
+Supponiamo che in input ci sia una apnea che comincia al tempo $s_{in}$ e finisce al tempo $f_{in}$. Si possono verificare vari casi:
+\begin{itemize}
+  \item
+    Esiste un solo intervallo temporale di output $(s_{out}, f_{out})$ che interseca l'intervallo $(s_{in}, f_{in})$. Allora definiamo l'errore di riconoscimento dell'evento $(s_{in}, f_{in})$ come 
+    \[
+      |s_{out}-s_{in}| + |f_{out}-f_{in}|
+    \]
+    e diciamo che l'evento $(s_{in}, f_{in})$ \`e un \emph{vero positivo} cio\`e un evento riconosciuto in modo corretto.
+  \item
+    Se non ci sono intervalli temporali di output che intersecano $(s_{in}, f_{in})$ allora diciamo che questo evento \`e un \emph{falso positivo}. I falsi positivi sono gli errori pi\`u gravi e che quindi incidono maggiormente nella valutazione di un algoritmo.
+  \item
+    Se ci sono pi\`u intervalli temporali di output che intersecano $(s_{in}, f_{in})$ allora la scelta di come valutare la qualit\`a dell'algoritmo \`e arbitraria e pu\`o essere ad esempio 
+    \[
+      |min(s_{out})-s_{in}| + |max(f_{out})-f_{in}|
+    \]
+\end{itemize}
+Rimane il caso in cui l'algoritmo produce un output $(s_{out}, f_{out})$ ma non abbiamo nessun intervallo di input che lo interseca. 
+In tal caso parliamo di \emph{falso negativo} ed \`e un errore meno grave di un falso positivo. 
+
+\paragraph{Valutare la localizzazione delle apnee a rischio.}
+Se si vuole valutare un algoritmo che riconosce la presenza di una apnea troppo lunga allora possiamo classificare lo spazio dell'input come nel caso precedente ma l'analisi che ne risulta \`e diversa.
+Supponiamo che in input ci sia una apnea troppo lunga (cio\`e maggiore di una certa soglia $S$ di sicurezza) che comincia al tempo $s_{in}$ e finisce al tempo $f_{in}$. Si possono verificare vari casi:
+\begin{itemize}
+  \item
+    C'\`e almeno un intervallo temporale di output $(s_{out}, f_{out})$ tale che 
+    \begin{itemize}
+      \item 
+	$(s_{out}, f_{out})$ interseca $(s_{in}, f_{in})$
+      \item
+	$s_{out} + S \leq s_{in} + S + T$ dove $T$ \`e una soglia di tolleranza dell'errore.
+      \item
+	$f_{out}-s_{out}>S$
+    \end{itemize}
+    In tal caso diciamo che l'evento $(s_{in}, f_{in})$ \`e un \emph{vero positivo} cio\`e un evento riconosciuto in modo corretto.
+  \item
+    Se non ci sono intervalli temporali di output con le propriet\`a elencate al punto precedente allora diciamo che l'evento $(s_{in}, f_{in})$ \`e un \emph{falso positivo}.
+\end{itemize}
+Rimane il caso in cui l'algoritmo produce in output un intervallo $(s_{out}, f_{out})$ di lunghezza maggiore della soglia di sicurezza ma non abbiamo nessun intervallo di input che lo interseca e che ha durata maggiore della soglia di sicurezza. 
+In tal caso abbiamo un \emph{falso negativo}. 
+Si pu\`o anche definire cosa intendiamo per \emph{vero negativo} e cio\`e una mancanza di apnea troppo lunga che l'algoritmo non classifica come apnea troppo lunga. 
+Tuttavia questa definizione non si applica in modo elegante alle premesse fatte in questo paragrafo. 
+La tabella seguente ricapitola i vari casi:
+\begin{center}
+    \begin{tabular}{|l|ll|}
+      \hline
+      \emph{evento: apnea troppo lunga} & evento presente & evento assente \\
+      \hline
+      evento riconosciuto        & \bf{vero positivo}   & \bf{falso negativo} \\
+      evento non riconosciuto    & \bf{falso positivo}  & \bf{vero negativo}  \\
+      \hline
+    \end{tabular}
+\end{center}
+
+Si pu\`o capire facilmente quale significato abbia la classificazione precedente, se si immagina uno scenario di uso del software.
+
+
+\begin{bf}Vero positivo.\end{bf}
+  Il soggetto ha una apnea nel sonno troppo lunga e il sistema suona l'allarme. Il soggetto si sveglia, spegne l'allarme e torna a dormire sano e salvo (si spera).
+
+
+\begin{bf}Vero negativo.\end{bf}
+  Il soggetto non ha una apnea nel sonno troppo lunga e il sistema non suona l'allarme. Questo caso \`e auspicabile. Maggiore \`e la frequenza di questi casi, maggiore \`e la qualit\`a del sonno del soggetto.
+
+
+\begin{bf}Falso positivo.\end{bf}
+  Il soggetto ha una apnea nel sonno troppo lunga e il sistema non suona l'allarme. Questo caso \`e rischioso per la salute del paziente.
+
+
+\begin{bf}Falso negativo.\end{bf}
+  Il soggetto non ha una apnea nel sonno troppo lunga e il sistema suona l'allarme. Il soggetto si sveglia, spegne l'allarme e torna a dormire. Non ha modo di capire se si \`e verificato un vero positivo o un falso negativo (quindi non impreca contro gli sviluppatori del software).
+    I falsi negativi degradano la qualit\`a del sonno del soggetto ma non sono un rischio grave per la salute quanto i falsi positivi.
+    Tuttavia se il degrado nella qualit\`a del sonno \`e eccessivo potrebbe causare danni psicofisici al soggetto che eventualmente superano quelli causati dalla sindrome da apnea del sonno.
+    Quindi \`e anche importante che il sistema non generi molti falsi negativi.
+
+

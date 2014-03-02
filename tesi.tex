@@ -1,0 +1,145 @@
+\documentclass[12pt,a4paper]{report}
+
+%    \usepackage{microtype}
+
+\usepackage{synttree}
+\usepackage{a4wide}
+\usepackage{algorithm2e}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bussproofs}
+\usepackage{color}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage[italian]{babel}
+\usepackage[italian]{babel}
+\usepackage{latexsym}
+\usepackage{makeidx}
+\usepackage{mathpartir}
+\usepackage{mathptmx}
+\usepackage{multicol}
+\usepackage{newlfont}
+\usepackage{setspace}
+\usepackage{stmaryrd}
+\usepackage{synttree}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage{url}
+\usepackage{vmargin}
+\usepackage{wrapfig}
+\usepackage[nottoc,numbib]{tocbibind}
+\usepackage{verbatim}
+
+
+\usepackage{rotating}
+\usepackage{qtree}
+\usepackage{tikz}
+
+
+\usetikzlibrary{arrows}
+
+
+\onehalfspacing % interlinea uno e mezzo
+
+\title{Analisi delle funzionalita' respiratorie \\ \large Monitoraggio della respirazione attraverso uno stetoscopio elettronico \\[4mm]}
+\author{Federico Viscomi}
+\makeindex
+
+
+
+\begin{document}
+
+
+
+%-------------------------------------------------------------------------------------%
+%-------------------------------------------------------------------------------------%
+% titolo
+%-------------------------------------------------------------------------------------%
+\begin{titlepage}
+  \begin{center}
+    {{\Large{\textsc{Alma Mater Studiorum $\cdot$ Universit\`a di Bologna}}}} 
+    \rule[0.1cm]{15.0cm}{0.1mm}
+    \rule[0.5cm]{15.0cm}{0.6mm}
+    {\small{\bf SCUOLA DI SCIENZE\\
+    Corso di Laurea in Informatica Magistrale}}
+  \end{center}
+  \vspace{15mm}
+  \begin{center}
+    {\LARGE{\bf Analisi delle funzionalit\`a respiratorie}}\\
+    \vspace{3mm}
+    {\large{\bf Monitoraggio della respirazione attraverso uno stetoscopio elettronico}}\\
+    % \vspace{3mm}
+    % {\Large{\bf TESI}}\\
+    \vspace{19mm} {\large{\bf Tesi di Laurea in Sistemi Mobili}}
+  \end{center}
+  \vspace{40mm}
+  \par
+  \noindent
+  \begin{minipage}[t]{0.47\textwidth}
+    {\large{\bf Relatore:\\
+    Chiar.mo Prof.\\
+    Vittorio Ghini}}
+  \end{minipage}
+\hfill
+  \begin{minipage}[t]{0.47\textwidth}\raggedleft
+    {\large{\bf Presentata da:\\
+    Federico Viscomi\\}}
+  \end{minipage}
+  \vspace{20mm}
+  \begin{center}
+    {\large{\bf Sessione III\\
+    Anno Accademico 2011/2012}}
+  \end{center}
+\end{titlepage}
+%-------------------------------------------------------------------------------------%
+
+Parole chiave: respirazione, pattern recognition, apprendimento automatico, monitoraggio, segnali biomedici.
+
+
+
+
+\tableofcontents
+% \listoffigures
+% \listoftables
+
+\input{introduzione}
+
+
+\part{Prerequisiti}
+\input{respirazione}
+\input{signalProcessing}
+\input{fourier}
+\input{wavelet}
+\input{filtri}
+\input{prerequisiti}
+% \input{estrattoDiPhonemeRecognitionUsingTimeDelayNeuralNetworks}
+
+
+\part{Stato dell'arte e analisi delle metodologie}
+\chapter{Stato dell'arte}
+\input{statoArte}
+\input{metodologia}
+
+
+\part{Sistema software}
+\input{specifiche}
+\input{architettura}
+\input{implementazione}
+% \input{deployment}
+\input{valutazione}
+\input{test}
+
+
+
+\part{Conclusioni}
+\input{conclusioni}
+\input{bibliografia}
+
+
+% \bibliographystyle{plain}
+% \bibliography{theBib}
+
+\end{document}

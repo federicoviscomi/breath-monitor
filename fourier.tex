@@ -1,0 +1,77 @@
+\section{Analisi armonica e trasformata di Fourier}
+
+L'analisi armonica \`e la branca della matematica che studia la rappresentazione delle funzioni o dei segnali come sovrapposizione di onde fondamentali. 
+Indaga e generalizza la nozione di serie di Fourier e trasformata di Fourier. 
+
+
+\begin{comment}
+Data una funzione $s(t)$ reale o complessa a quadrato sommabile, periodica di periodo $2\pi$, per ogni $n$ intero esistono i coefficienti complessi:
+\[
+c_{n} = \frac{1}{2\pi} \int_{0}^{2\pi}e^{i\cdot n\cdot t}s(t)dt
+\]
+e la funzione pu\`o essere rappresentata come
+\[
+s(t) = \sum_{n=-\infty}^{\infty} c_{n} e^{i\cdot n\cdot t}
+\]
+\end{comment}
+
+L'interpretazione dello sviluppo in serie di Fourier \`e che un segnale periodico di potenza finita si pu\`o sviluppare come combinazione lineare di funzioni periodiche semplici la cui frequenza \`e un numero intero. 
+Il tutto si generalizza facilmente al caso in cui il periodo sia $T$ e quindi la frequenza fondamentale abbia il valore $1/T$. 
+
+L'importanza della formula \`e che tutta l'informazione di una funzione periodica continua pu\`o essere espressa con un infinit\`a numerabile (quindi discreta) di valori complessi.
+
+
+\subsection{Serie di Fourier}
+
+La serie di Fourier \`e una rappresentazione di una funzione mediante una combinazione lineare di funzioni sinusoidali fondamentali.
+Un segnale $f(t)$ e' una funzione e quindi si pu\`o decomporre usando una serie di Fourier. La decomposizione di un segnale attraverso una serie di Fourier ci da una descrizione delle frequenze che lo compongono \cite{fourier, fourier3}.
+
+Sia $f(x)$ una funzione definita sui numeri reali e periodica di periodo $2\pi$. Diremo che $f(x)$ \`e sviluppabile in serie di Fourier se esistono dei coefficienti $a_{0}, a_{k}, b_{k}$ con $k$ numero natuale tali che
+\[
+  f(x) = a_{0} + \sum_{k\in \mathbb{N}} (a_{k} cos(kx) + b_{k} sen(kx))
+\]
+La formula precedente \`e lo sviluppo in serie di Fourier della funzione $f$ e i coefficienti di Fourier si possono calcolare nel seguente modo:
+\[
+  \begin{array}{lll}
+      a_{0}=\frac{1}{2 \pi} \int_{-\pi}^{\pi} f(x) dx
+    &
+      a_{k}=\frac{1}{\pi} \int_{-\pi}^{\pi} f(x) cos(kx) dx
+    &
+      b_{k}=\frac{1}{\pi} \int_{-\pi}^{\pi} f(x) sen(kx) dx
+  \end{array}
+\]
+
+\cite{fourier2}
+
+\subsection{Trasformata di Fourier}
+
+La trasformata di Fourier permette di scomporre e successivamente ricombinare, un segnale generico in una somma infinita di sinusoidi con frequenze, ampiezze e fasi diverse. L'insieme di valori in funzione della frequenza \`e detto spettro di ampiezza e spettro di fase. 
+
+Se il segnale in oggetto \`e un segnale periodico, la sua trasformata di Fourier \`e un insieme di valori discreti, che in tal caso prende il nome di spettro discreto o spettro a pettine. 
+Mentre nel caso in cui il segnale sia non periodico lo spettro \`e continuo, e tanto pi\`u \`e esteso lungo l'asse delle frequenze quanto pi\`u \`e limitato nel dominio originario della variabile indipendente, e viceversa.
+Se il segnale ha un valore medio diverso da zero la serie restituisce anche una componente costante che lo rappresenta.
+
+Sia $f\in L^{1}(\mathbb{R}^{n})$ una funzione integrabile, la trasformata continua di Fourier, detta anche semplicemente trasformata di Fourier, e' definita nel modo seguente:
+\[
+  \mathbb{F}(f)=  t\mapsto \frac{1}{(2\pi)^{\frac{n}{2}}} \int_{\mathbb{R}^{n}} e ^{-i\cdot t \cdot x} dx
+\]
+
+\cite{fourier}\cite{fourier3}
+
+\subsection{Trasformata discreta di Fourier}
+
+La trasformata di Fourier opera su funzioni continue, sia nel dominio dei tempi che delle frequenze. Al contrario, la trasformata discreta di Fourier opera su funzioni a dominio discreto. Sia $S_{n}$ un insieme di sequenze periodiche di periodo $n$. Un generico elemento di $S_{n}$ si puo' scrivere come $y=\{y_{j}\}_{j\in \mathbb{N}}$ e si puo' pensare come un segnale periodico discreto nel quale $y_{j}$ e' il valore del segnale al tempo $j$. Definiamo la trasformata discreta di Fourier di $y$ come la sequenza
+\[
+  (\mathbb{F}_{n}(y))_{k} = z_{k}
+\]
+dove
+\[
+  \begin{array}{lll}
+      z_{k}=\displaystyle\sum_{j=0}^{n-1} y_{j} \overline{w}^{j \cdot k}
+    &
+    &
+      w=\exp\left(\displaystyle\frac{s \pi i}{n}\right)
+  \end{array}
+\]
+ 
+\cite{fourier}

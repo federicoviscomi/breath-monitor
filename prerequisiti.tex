@@ -1,0 +1,69 @@
+\chapter{Tecniche risolutive}
+\label{capitolo:preliminari:ulteriori}
+
+
+% In questo capitolo si introducono le premesse teoriche necessarie per la comprensione dei capitoli successivi.
+% Oltre alle tecniche riscontrate durante l'analisi della letteratura si \`e scelto di introdurre altri concetti utili per ulteriori metodi risolutivi.
+
+Questo capitolo introduce le premesse teoriche necessarie per la comprensione di: 
+\begin{itemize}
+  \item 
+    Algoritmi usati nello stato dell'arte.
+  \item
+    Algoritmi usati nel sistema implementato.
+  \item
+    Algoritmi dei quali \`e stata valutata l'adeguatezza alla soluzione del problema.
+\end{itemize}
+
+L'organizzazione dei contenuti in sezioni \`e illustrata nella figura \ref{prerequSect}
+% Oltre alla presentazione degli algoritmi descritti nell'analisi della letteratura si \`e dato uno spazio alla descrizione di algoritmi utili per la soluzione del problema.
+% Dopo un analisi delle possibili tecniche risolutive si \`e scelto di suggerire un sistema che utilizza un algoritmo di onset detection insieme a un algoritmo di clustering. 
+
+
+
+
+\begin{center}
+\begin{figure}
+ 
+
+\begin{tikzpicture}
+%   [scale=.8,auto=left,every node/.style={fill=blue!20}]
+[->,>=stealth',shorten >=1pt,auto,node distance=3cm,
+  thick,main node/.style={circle,fill=blue!20,draw,font=\sffamily\Large\bfseries}]
+  \node (n1) at (0,3) {tecniche};
+
+  \node (n1n1) at (4,1) {stato dell'arte};
+  \node (n1n2) at (4,3) {sistema implementato};
+  \node (n1n3) at (4,5) {altre valutate};
+
+%   \node (N1) at (8,2) {filtri};
+  \node (N2) at (8,3) {onset detection};
+  \node (n1n1n2) at (8,2) {modelli markoviani};
+  \node (n1n1n3) at (8,1) {dimensione frattale};
+  \node (n1n3n1) at (8,4) {clustering};
+  \node (n1n3n2) at (8,5) {reti neurali};
+
+  \node (N1n1) at (12,3) {\ref{beatdetectionDescrizione}};
+%   \node (N1n2) at (12,3) {\ref{filtri}};
+  \node (n1n1n2n1) at (12,2) {\ref{markov}};
+  \node (n1n1n3n1) at (12,1) {\ref{frattale}};
+  \node (n1n3n1n1) at (12,4) {\ref{clustering}};
+  \node (n1n3n2n1) at (12,5) {\ref{retineurali}};
+
+   \foreach \from/\to in {n1/n1n1,n1/n1n2,n1/n1n3,n1n1/N2,n1n2/N2,n1n2/n1n3n1,n1n1/n1n1n2,n1n1/n1n1n3,n1n3/n1n3n1,n1n3/n1n3n2, N2/N1n1,n1n1n2/n1n1n2n1,n1n1n3/n1n1n3n1,n1n3n1/n1n3n1n1,n1n3n2/n1n3n2n1}
+     \draw (\from) -- (\to);
+
+\end{tikzpicture}
+\caption{Organizzazione dei contenuti nelle sezioni del capitolo}
+\label{prerequSect}
+\end{figure}
+\end{center}
+
+
+
+
+\input{onsetDetection}
+\input{clustering}
+\input{retiNeuraliArtificiali}
+\input{fractaldimension}
+\input{markov}

@@ -1,0 +1,152 @@
+\section{Classificazione degli algoritmi}% di riconoscimento delle fasi e/o dei cicli respiratori
+
+  In questa sezione ci occupiamo della classificazione degli algoritmi visti nello stato dell'arte. 
+  La prima distinzione che si pu\`o fare \`e quella riguardante la metodologia usata nella soluzione del problema. In particolare si nota che gli articoli \cite{ASPODUOCSS} \cite{CARPDWAM} \cite{DECE} \cite{ASTFARA} usano tutti una tecnica di beat detection per analizzare il respiro e ricavare gli onset della respirazioni, applicano dei filtri passabanda per l'eliminazione del rumore e del battito cardiaco e usando un threshold adattivo per rilevare gli onset.
+  
+  
+  In particolare abbiamo che i sistemi \cite{CARPDWAM} \cite{DECE} sono molto simili tra loro perch\'e entrambi dopo aver applicato dei filtri passabanda suddividono l'onda in segmenti e ne calcolano la potenza media infine tramite una finestra mobile con una durata pari a un ciclo respiratorio riconoscono gli onset della respirazione.
+  Le differenze tra questi due sistemi sono per l'appunto minime come per esempio la scelta della dimensione dei segmenti di analisi: il primo utilizza un segmento di $200 ms$, mentre il secondo di $100 ms$, pi\`u altri piccoli dettagli.
+  
+
+  L'articolo \cite{ASPODUOCSS} invece usa una tecnica di riconoscimento differente:
+  oltre a un filtraggio passabanda usa anche un filtro non lineare con lo scopo di eliminare meglio i suoni cardiaci.
+  Per la stima degli onset invece viene usata l'analisi dello zero-crossing in quanto le rispettive fasi di inspirazione ed espirazione avvengono ai passaggi per lo zero.
+
+
+  L'ultimo articolo che sfrutta il beat detection \cite{ASTFARA} dopo particolari filtri e downsampling usa come l'articolo precedente la tecnica di zero-crossing, ma la utilizza in modo differente: viene usata per determinare il ciclo di fase respiratoria, supponendo che in un ciclo di respirazione sono presenti un numero prefissato di passaggi per lo zero dell'onda.
+  Questa tecnica viene usata quindi per determinare la finestra di analisi alla quale viene poi calcolata l'energia totale e confrontata con una soglia fissa determinata empiricamente; se la l'energia totale del segmento supera la soglia fissa il segmento viene classificato come respiro. 
+
+
+  Oltre alla tecnica di beat detection abbiamo analizzato un sistema di natura probabilistica che sfrutta le catene di Markov.
+  L'articolo \cite{ARSAPD} modella il problema attraverso un modello nascosto di Markov nel quale la variabile nascosta pu\`o assumere tre possibili valori: inspirazione, espirazione e pausa.
+  I risultati di questo algoritmo sono molto influenzabili dal rumore esterno e da rumori inaspettati emessi dal soggetto, in conclusione non risulta un algoritmo ottimale a meno che il suono prima di essere analizzato venga sottoposto a un miglior filtraggio.
+
+
+  Infine abbiamo l'articolo \cite{RSDUVFD} che risolve il problema della localizzazione delle fasi respiratorie usando la dimensione frattale.
+  Come i sistemi basati sul beat detection suddivide il suono in segmenti e sfrutta una finestra di lunghezza pari a mezzo respiro. Viene scelta questa tecnica in quanto si ipotizza che la varianza della dimensione frattale del suono respiratorio abbia un picco negli onset delle fasi respiratore.
+  Un'altra differenza di questo sistema consiste nel fatto che l'analisi \`e esclusivamente nel dominio del tempo, a differenza di tutti gli algoritmi di beat detection.
+
+
+\begin{center}
+\begin{figure}
+\centering
+\begin{tikzpicture}
+%   [scale=.8,auto=left,every node/.style={fill=blue!20}]
+[->,>=stealth',shorten >=1pt,auto,node distance=3cm,
+  thick,main node/.style={circle,fill=blue!20,draw,font=\sffamily\Large\bfseries}]  
+  \node (adattivo) at 		(0,0) {beat detection adattivo};
+  \node (media) at 		(0,0.5) {energia media};
+  \node (nonlin) at 		(0,1) {filtro non lineare};
+  \node (zero) at 		(0,1.5) {zero crossing};
+  \node (fisso) at 		(0,2) {beat detection fisso};
+  \node (frattale) at 		(0,2.5) {dimensione frattale};
+  \node (markoviani) at 	(0,3) {modelli markoviani};
+
+
+%   \node (n1n1n1) at (6,0.5) {soglia adattiva};
+
+  \node (CARPDWAM) at 		(5,0) {\cite{CARPDWAM}};
+  \node (DECE) at 		(5,0.5) {\cite{DECE}};
+  \node (ASPODUOCSS) at 	(5,1) {\cite{ASPODUOCSS}};
+  \node (ASTFARA) at 		(5,2) {\cite{ASTFARA}};
+  \node (RSDUVFD) at 		(5,2.5) {\cite{RSDUVFD}};
+  \node (ARSAPD) at 		(5,3) {\cite{ARSAPD}};
+
+
+  \node (passabanda) at 		(9,0.5) {filtro passa banda};
+  \node (downsampling) at 		(9,2.5) {downsampling};
+
+%   \node (f1) at (14,2) {filtri};
+%   \node (f1n1) at (11,1.5) {passa banda};
+
+
+   \foreach \from/\to in {CARPDWAM/media,CARPDWAM/adattivo,
+      DECE/media, DECE/adattivo,
+      ASPODUOCSS/media,
+      ASPODUOCSS/nonlin,
+      ASTFARA/fisso, ASTFARA/zero,
+      ARSAPD/markoviani,
+      RSDUVFD/frattale,
+      ASPODUOCSS/passabanda, 
+      ASTFARA/passabanda, 
+      DECE/passabanda, 
+      CARPDWAM/passabanda,
+      ASPODUOCSS/downsampling, 
+      ASTFARA/downsampling, 
+      DECE/downsampling, 
+      CARPDWAM/downsampling}
+     \draw (\from) -- (\to);
+
+\end{tikzpicture}
+
+
+\caption{Schema riassuntivo delle tecniche usate dagli articoli nello stato dell'arte}
+\label{schemariassuntivostatoarte}
+\end{figure}
+\end{center}
+
+
+\paragraph{Implementazioni}
+  
+  \cite{RSDUVFD} presenta un algoritmo risolutivo e i risultati di alcuni casi di test ma non fa nessun riferimento all'implementazione.
+  \cite{CARPDWAM} sostiene di aver sviluppato un programma MATLAB per riconoscere le fasi respiratorie usando i suoni respiratori e ne descrive il funzionamento e i risultati di alcuni test. Tuttavia non rende il software disponibile e non entra nel dettaglio della complessit\`a e dei tempi di esecuzione.
+  \cite{ARSAPD} e \cite{ASPODUOCSS} descrivono un algoritmo e mostrano i risultati dei test di questo algoritmo quindi assumiamo che lo abbiano anche implementato anche se non ne parla affatto.
+  \cite{ASTFARA} descrive in modo molto dettagliato un software MATLAB che riconosce le fasi respiratorie, fa anche una classificazione dei suoni respiratori ed e' dotato di una interfaccia grafica. Non rende tuttavia tale software disponibile.
+  \cite{DECE} implementa un software in C++ per il riconoscimento delle fasi respiratorie dai suoni tracheali dotato di una interfaccia grafica pero' non lo rende disponibile.
+
+
+\begin{center}
+\begin{figure}
+
+\centering
+\begin{tikzpicture}
+%   [scale=.8,auto=left,every node/.style={fill=blue!20}]
+[->,>=stealth',shorten >=1pt,auto,node distance=3cm,
+  thick,main node/.style={circle,fill=blue!20,draw,font=\sffamily\Large\bfseries}]
+  \node (n1) at (0,2) {implementazione};
+
+  \node (n1n1) at (2,0.5) {fatta};
+  \node (n1n2) at (2,3.5) {non fatta};
+
+  \node (n1n1n1) at (5,0) {disponibile};
+  \node (n1n1n2) at (5,2) {non disponibile};
+
+  \node (n1n1n2n1) at (8,0.5) {\cite{RSDUVFD}};
+  \node (n1n1n2n2) at (8,1) {\cite{ARSAPD}};
+  \node (n1n1n2n3) at (8,1.5) {\cite{CARPDWAM}};
+  \node (n1n1n2n4) at (8,2) {\cite{ASTFARA}};
+  \node (n1n1n2n5) at (8,2.5) {\cite{ASPODUOCSS}};
+  \node (n1n1n2n6) at (8,3) {\cite{DECE}};
+
+  \node (no1) at (11,1.75) {MATLAB};
+  \node (no2) at (11,3) {c++};
+
+
+   \foreach \from/\to in {n1/n1n1,n1/n1n2,
+      n1n1/n1n1n1,n1n1/n1n1n2,
+      n1n1n2/n1n1n2n1,n1n1n2/n1n1n2n2,n1n1n2/n1n1n2n3,n1n1n2/n1n1n2n4,n1n1n2/n1n1n2n5,n1n1n2/n1n1n2n6,
+      no2/n1n1n2n6, no1/n1n1n2n3, no1/n1n1n2n4}
+     \draw (\from) -- (\to);
+
+\end{tikzpicture}
+\caption{Schema riassuntivo delle implementazioni nello stato dell'arte}
+\label{schemariassuntivostatoarte}
+\end{figure}
+\end{center}
+
+
+
+
+\section{Conclusioni}
+  Questi sistemi di analisi risultano tutti molto utili per l'analisi delle fasi respiratorie.
+  Nessuno di questi pero' contiene un'analisi nel caso in cui il respiro sia assente. 
+  Solo \cite{ASTFARA} classifica i segmenti come respiro o non respiro, pero' la sua analisi non viene fatta online e cio\`e per determinare le soglie per la classificazione ha bisogno di analizzare l'intero file audio contenente il suono respiratorio.
+  Un'importante problematica che non viene affrontata in questi articoli sono i rumori provenienti dal soggetto come per esempio la deglutizione ed eventuali suoni dovuti a una respirazione anormale (crackles, sibili, rantoli ecc..) che in alcuni casi possono rappresentare un disturbo durante l'analisi.
+  In altre parole gli studi trovati nello stato dell'arte partono dall'ipotesi che i suoni di input siano presenti e siano normali, quindi non sono usabili direttamente in uno scenario reale nel quale il soggetto potrebbe smettere di respirare e potrebbe avere varie patologie (bronchite, pleurite, roncopatia). 
+  
+
+
+
+
+
+

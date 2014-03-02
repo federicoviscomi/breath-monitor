@@ -1,0 +1,84 @@
+\beamer@endinputifotherversion {3.10pt}
+\headcommand {\slideentry {0}{0}{1}{1/1}{}{0}}
+\headcommand {\beamer@framepages {1}{1}}
+\headcommand {\slideentry {0}{0}{2}{2/2}{}{0}}
+\headcommand {\beamer@framepages {2}{2}}
+\headcommand {\sectionentry {1}{Obiettivi}{3}{Obiettivi}{0}}
+\headcommand {\beamer@sectionpages {1}{2}}
+\headcommand {\beamer@subsectionpages {1}{2}}
+\headcommand {\slideentry {1}{0}{3}{3/3}{}{0}}
+\headcommand {\beamer@framepages {3}{3}}
+\headcommand {\sectionentry {2}{Apnea}{4}{Apnea}{0}}
+\headcommand {\beamer@sectionpages {3}{3}}
+\headcommand {\beamer@subsectionpages {3}{3}}
+\headcommand {\slideentry {2}{0}{4}{4/4}{}{0}}
+\headcommand {\beamer@framepages {4}{4}}
+\headcommand {\beamer@subsectionentry {0}{2}{1}{5}{Sindrome da apnea del sonno}}\headcommand {\beamer@subsectionpages {4}{4}}
+\headcommand {\slideentry {2}{1}{0}{5/5}{}{0}}
+\headcommand {\beamer@framepages {5}{5}}
+\headcommand {\sectionentry {3}{Motivazione}{6}{Motivazione}{0}}
+\headcommand {\beamer@sectionpages {4}{5}}
+\headcommand {\beamer@subsectionpages {4}{5}}
+\headcommand {\beamer@subsectionentry {0}{3}{1}{6}{Diagnosi e terapia d'emergenza}}\headcommand {\beamer@subsectionpages {6}{5}}
+\headcommand {\slideentry {3}{1}{1}{6/6}{Diagnosi e terapia d'emergenza}{0}}
+\headcommand {\beamer@framepages {6}{6}}
+\headcommand {\beamer@subsectionentry {0}{3}{2}{7}{Svegliare il soggetto}}\headcommand {\beamer@subsectionpages {6}{6}}
+\headcommand {\slideentry {3}{2}{1}{7/7}{Svegliare il soggetto}{0}}
+\headcommand {\beamer@framepages {7}{7}}
+\headcommand {\sectionentry {4}{Architettura del sistema}{8}{Architettura del sistema}{0}}
+\headcommand {\beamer@sectionpages {6}{7}}
+\headcommand {\beamer@subsectionpages {7}{7}}
+\headcommand {\beamer@subsectionentry {0}{4}{1}{8}{Schema di funzionamento}}\headcommand {\beamer@subsectionpages {8}{7}}
+\headcommand {\slideentry {4}{1}{1}{8/8}{Schema di funzionamento}{0}}
+\headcommand {\beamer@framepages {8}{8}}
+\headcommand {\sectionentry {5}{Segnale di input}{9}{Segnale di input}{0}}
+\headcommand {\beamer@sectionpages {8}{8}}
+\headcommand {\beamer@subsectionpages {8}{8}}
+\headcommand {\slideentry {5}{0}{2}{9/9}{}{0}}
+\headcommand {\beamer@framepages {9}{9}}
+\headcommand {\slideentry {5}{0}{3}{10/10}{}{0}}
+\headcommand {\beamer@framepages {10}{10}}
+\headcommand {\slideentry {5}{0}{4}{11/11}{}{0}}
+\headcommand {\beamer@framepages {11}{11}}
+\headcommand {\sectionentry {6}{Implementazione}{12}{Implementazione}{0}}
+\headcommand {\beamer@sectionpages {9}{11}}
+\headcommand {\beamer@subsectionpages {9}{11}}
+\headcommand {\beamer@subsectionentry {0}{6}{1}{12}{Estrarre i suoni respiratori dal segnale}}\headcommand {\beamer@subsectionpages {12}{11}}
+\headcommand {\slideentry {6}{1}{1}{12/12}{Estrarre i suoni respiratori dal segnale}{0}}
+\headcommand {\beamer@framepages {12}{12}}
+\headcommand {\beamer@subsectionentry {0}{6}{2}{13}{Riconoscimento delle apnee}}\headcommand {\beamer@subsectionpages {12}{12}}
+\headcommand {\slideentry {6}{2}{1}{13/13}{Riconoscimento delle apnee}{0}}
+\headcommand {\beamer@framepages {13}{13}}
+\headcommand {\sectionentry {7}{Dettagli implementativi}{14}{Dettagli implementativi}{0}}
+\headcommand {\beamer@sectionpages {12}{13}}
+\headcommand {\beamer@subsectionpages {13}{13}}
+\headcommand {\slideentry {7}{0}{2}{14/14}{}{0}}
+\headcommand {\beamer@framepages {14}{14}}
+\headcommand {\sectionentry {8}{Test}{15}{Test}{0}}
+\headcommand {\beamer@sectionpages {14}{14}}
+\headcommand {\beamer@subsectionpages {14}{14}}
+\headcommand {\slideentry {8}{0}{3}{15/15}{}{0}}
+\headcommand {\beamer@framepages {15}{15}}
+\headcommand {\slideentry {8}{0}{4}{16/16}{}{0}}
+\headcommand {\beamer@framepages {16}{16}}
+\headcommand {\slideentry {8}{0}{5}{17/17}{}{0}}
+\headcommand {\beamer@framepages {17}{17}}
+\headcommand {\slideentry {8}{0}{6}{18/18}{}{0}}
+\headcommand {\beamer@framepages {18}{18}}
+\headcommand {\slideentry {8}{0}{7}{19/19}{}{0}}
+\headcommand {\beamer@framepages {19}{19}}
+\headcommand {\sectionentry {9}{Sviluppi futuri}{20}{Sviluppi futuri}{0}}
+\headcommand {\beamer@sectionpages {15}{19}}
+\headcommand {\beamer@subsectionpages {15}{19}}
+\headcommand {\slideentry {9}{0}{8}{20/20}{}{0}}
+\headcommand {\beamer@framepages {20}{20}}
+\headcommand {\sectionentry {10}{Conclusioni}{21}{Conclusioni}{0}}
+\headcommand {\beamer@sectionpages {20}{20}}
+\headcommand {\beamer@subsectionpages {20}{20}}
+\headcommand {\slideentry {10}{0}{9}{21/21}{}{0}}
+\headcommand {\beamer@framepages {21}{21}}
+\headcommand {\beamer@partpages {1}{21}}
+\headcommand {\beamer@subsectionpages {21}{21}}
+\headcommand {\beamer@sectionpages {21}{21}}
+\headcommand {\beamer@documentpages {21}}
+\headcommand {\def \inserttotalframenumber {21}}

@@ -1,0 +1,102 @@
+
+\chapter{Speech recognition}
+
+\section{Time delay neural network}
+
+To be useful for speech recognition, a layered feedforward neural network must have a number of properties:
+\begin{itemize}
+  \item 
+    It should have multiple layers and sufficient interconnections between units in each of these layers. This is to ensure that the network will have the ability to learn complex nonlinear decision surfaces.
+  \item
+    The network should have the ability to represent relationships between events in time. These events could be spectral coefficients, but might also be the output of higher level feature detectors.    
+  \item
+    The actual features or abstractions learned by the network should be invariant under translation in time.    
+  \item
+    The learning procedure should not require precise temporal alignment of the labels that are to be learned. 
+  \item
+    The number of weights in the network should be sufficiently small compared to the amount of training data so that the network is forced to encode the training data by extracting regularity. 
+\end{itemize}
+In the following, we describe a TDNN architecture that satisfies all of these criteria and is designed explicitly for the recognition of phonemes, in particular, the voiced stops “B,” “D,” and “ G . ”
+
+\section{A TDNN Architecture for Phoneme Recognition}
+The basic unit used in many neural networks computes the weighted sum of its inputs and then passes this sum through a nonlinear function, most commonly a threshold or sigmoid function. In our TDNN, this basic unit is modified by introducing delays D , through D , as shown in Fig. 1. The J inputs of such a unit now will be multi- plied by several weights, one for each delay and one for
+the undelayed input. For N = 2, and J = 16, for example,
+48 weights will be needed to compute the weighted sum
+of the 16 inputs, with each input now measured at three
+different points in time. In this way, a TDNN unit has the
+ability to relate and compare current input to the past his-
+tory of events. The sigmoid function was chosen as the
+nonlinear output function F due to its convenient mathe-
+matical properties [ 181, [5].
+For the recognition of phonemes, a three layer net is
+constructed.2 Its overall architecture and a typical set of
+activities in the units are shown in Fig. 2.
+At the lowest level, 16 normalized melscale spectral
+coefficients serve as input to the network. Input speech,
+sampled at 12 kHz, was Hamming windowed and a 256-
+point FFT computed every 5 ms. Melscale coefficients
+were computed from the power spectrum by computing
+log energies in each melscale energy band [25], where
+adjacent coefficients in frequency overlap by one spectral
+sample and are smoothed by reducing the shared sample
+by 50 percent [25].3 Adjacent coefficients in time were
+collapsed for further data reduction resulting in an overall
+10 ms frame rate. All coefficients of an input token (in
+this case, 15 frames of speech centered around the hand-
+labeled vowel onset) were then normalized. This was ac-
+complished by subtracting from each coefficient the aver-
+age coefficient energy computed over all 15 frames of an
+input token and then normalizing each coefficient to lie
+between - 1 and 1. All tokens in our database were pre-
+processed in the same fashion. Fig. 2 shows the resulting
+coefficients for the speech token “BA” as input to the
+network, where positive values are shown as black squares
+and negative values as gray squares.
+This input layer is then fully interconnected to a layer
+of 8 time-delay hidden units, where J = 16 and N = 2
+(i.e., 16 coefficients over 3 frames with time delay 0, 1,
+and 2). An alternative way of seeing this is depicted in
+Fig. 2. It shows the inputs to these time-delay units ex-
+panded out spatially into a 3 frame window, which is
+passed over the input spectrogram. Each unit in the first
+hidden layer now receives input (via 48 weighted connec-
+tions) from the coefficients in the 3 frame window. The
+particular choice of 3 frames (30 ms) was motivated by
+earlier studies [26]-[29] that suggest that a 30 ms window
+might be sufficient to represent low level acoustic-pho-
+netic events for stop consonant recognition. It was also
+the optimal choice among a number of alternative designs
+evaluated by Lang [21] on a similar task.
+In the second hidden layer, each of 3 TDNN units looks
+at a 5 frame window of activity levels in hidden layer 1
+(i.e., J = 8 , N = 4). The choice of a larger 5 frame win-
+dow in this layer was motivated by the intuition that higher
+level units should learn to make decisions over a wider
+range in time based on more local abstractions at lower
+levels.
+Finally, the output is obtained by integrating (sum-
+ming) the evidence from each of the 3 units in hidden
+layer 2 over time and connecting it to its pertinent output
+unit (shown in Fig. 2 over 9 frames for the “B” output
+unit). In practice, this summation is implemented simply
+as another nonlinear (sigmoid function is applied here as
+well) TDNN unit which has fixed equal weights to a row
+of unit firings over time in hidden layer 2.4
+When the TDNN has learned its internal representation,
+it performs recognition by passing input speech over the
+TDNN units. In terms of the illustration of Fig. 2, this is
+equivalent to passing the time-delay windows over the
+lower level units' firing pattern^.^ At the lowest level,
+these firing patterns simply consist of the sensory input,
+i.e., the spectral coefficients.
+Each TDNN unit outlined in this section has the ability
+to encode temporal relationships within the range of the
+N delays. Higher layers can attend to larger time spans,
+so local short duration features will be formed at the lower
+layer and more complex longer duration features at the
+higher layer. The learning procedure ensures that each of
+the units in each layer has its weights adjusted in a way
+that improves the network's overall performance.
+
+
+

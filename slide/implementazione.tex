@@ -1,0 +1,76 @@
+\section{Implementazione}
+\subsection{Estrarre i suoni respiratori dal segnale}
+\begin{frame}
+  \frametitle{Estrarre i suoni respiratori dal segnale}
+  \framesubtitle{Pattern pipeline}
+\begin{center}
+\begin{tikzpicture}
+%   [scale=.8,auto=left,every node/.style={fill=blue!20}]
+[->,>=stealth',shorten >=1pt,auto,node distance=3cm,
+  thick,main node/.style={circle,fill=blue!20,draw,font=\sffamily\LARGE\bfseries}]
+
+  \node [main node] (start) at 		(0,6) 	{};
+  \node (Buffering) at 			(1,5) 	{Buffering};
+  \node (Downsampling) at 		(2,4)	{Downsampling};
+  \node (Band) at 			(3,3) 	{Band pass};
+  \node (Magnitude) at 			(4,2) 	{Magnitude};
+  \node (Median) at 			(5,1) 	{Median};
+  \node [main node] (end) at 		(6,0) 	{};	
+
+   \foreach \from/\to in {start/Buffering,Buffering/Downsampling,Downsampling/Band,Band/Magnitude,Magnitude/Median,Median/end}
+     \draw (\from) -- (\to);
+
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+% 	Il segnale attraversa la successione di fasi a cascata rappresentate nella figura \ref{filterActivity}. 
+% 	Ogni filtro \`e implementato in modo simile a quanto specificato dall'interfaccia $InputStream$ di Java. 
+% 	Siamo davanti ad un tipico caso di design di tipo \emph{pipeline} in quanto l'output di un filtro \`e l'input del filtro successivo(eccetto che per l'ultimo filtro). 
+% 	Il segnale audio, anche nel caso in cui venga letto da un file, \`e trattato come uno \emph{stream} di dati. 
+% 	Pi\`u in dettaglio le fasi di filtraggio sono le seguenti:
+%       \paragraph{$Buffering/Windowind$}
+% 	Questa fase \`e necessaria in quanto alcuni dei filtri successivi lavorano su blocchi di input e non sul singolo campione. 
+% 	Inoltre la presenza del buffer pu\`o diminuire il tempo totale di elaborazione.
+% 	In questo caso l'input \`e letto da un file quindi non ci sono problemi di overflow.
+% 	Una condizione sufficiente affinch\`e il software rispetti i propri requisiti real time \`e che la velocit\`a di elaborazione sia sempre maggiore di: un secondo di segnale fratto un secondo di tempo di elaborazione. 
+%       \paragraph{$Downsampling$}
+% 	La sequenza di campionamento viene ridotta con lo scopo di aumentare l'efficienza delle fasi successive dell'algoritmo. 
+% 	Gli spettri di potenza dei suoni respiratori e dei suoni cardiaci hanno frequenze al di sotto dei $500Hz$. 
+% 	Quindi si pu\`o abbassare la frequenza di campionamento a $1000Hz$ in quanto una larghezza di banda di $500Hz$ \`e adeguata a catturare i suoni respiratori\cite{ASPODUOCSS}. 
+%       \paragraph{$Bandpass filtering$}
+% 	Questo filtro lascia passare solo i suoni che si trovano nella banda di frequenza dai $100$ ai $1500Hz$, il risultato \`e un suono nel quale sono pi\`u facilmente distinguibili i suoni normali della respirazione. 
+% 	Inoltre questo filtro elimina anche alcuni suoni respiratori anormali e parte dei suoni cardiocircolatori.
+% 	Questo filtro \`e implementato grazie alle librerie JSTK reperite all'indirizzo \cite{jstk}. 
+% 	JSTK sta per Java speech toolkit e fornisce tra le altre cose una libreria di tecniche usate per il riconoscimento vocale. 
+% 	La libreria \`e rilasciata secondo la licenza GPLv3.
+%       \paragraph{$Magnitude filtering$}
+% 	Questo filtro semplicemente prende il valore assoluto del segnale.
+%       \paragraph{$Median filtergin$}
+% 	Questo \`e un classico filtro a mediana con finestra rettangolare di dimensione $10ms$ e serve per smorzare i suoni accidentali che hanno una intensit\`a relativamente alta rispetto al suono respiratorio e una durata relativamente bassa rispetto alla durata delle fasi respiratorie.
+
+\subsection{Riconoscimento delle apnee}
+\begin{frame}
+  \frametitle{Riconoscimento delle apnee}
+%   \framesubtitle{Pattern pipeline}
+\begin{center}
+\begin{tikzpicture}
+%   [scale=.8,auto=left,every node/.style={fill=blue!20}]
+[->,>=stealth',shorten >=1pt,auto,node distance=3cm,
+  thick,main node/.style={circle,fill=blue!20,draw,font=\sffamily\LARGE\bfseries},
+  decision node/.style={draw,font=\sffamily}]
+
+  \node [main node] (start) at 			(2,5) 	{};
+  \node  (Finestra) at 				(2,4) 	{Finestra rettangolare $10ms$};
+  \node [decision node] (decision) at 		(2,3)	{Energia $>$ Energia media $4s$?};
+  \node (Pausa) at 				(4,2) 	{Pausa respiratoria};
+  \node (Espirazione) at 			(0,2) 	{Espirazione/Inspirazione};
+  \node [decision node] (Clustering) at	(2,1) 	{Clustering};
+  \node [main node] (end) at 			(2,0) 	{};	
+
+   \foreach \from/\to in {start/Finestra,Finestra/decision,decision/Pausa,decision/Espirazione,Pausa/Clustering,Espirazione/Clustering,Clustering/end}
+     \draw (\from) -- (\to);
+
+\end{tikzpicture}
+\end{center}
+\end{frame}

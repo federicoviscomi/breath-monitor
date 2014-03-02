@@ -1,0 +1,184 @@
+% \chapter{Separare i suoni dei polmoni dai suoni del cuore}
+% % I suoni dei polmoni(LS) nelle registrazioni della respirazione sono alterati dai suoni prodotti dal cuore(HS). Cancellare i suoni del cuore e' difficile perche' i segnali HS ed LS hanno spettri di frequenza che si sovrappongono, in particolare alle frequenze al disotto dei 150Hz. \cite{TFC} usa una rappresentazione detta spettro temporale o a modulazione di frequenza.  GIUSTIFICARE la scelta delle finestre temporali in base alla durata dei suoni respiratori e alla durata delle fasi respiratorie
+% 
+% \section{Modulation Filtering for Heart and Lung Sound Separation from Breath Sound Recordings}
+% 
+% La separazione dei suoni cardiaci(HS) dai suoni respiratori(Ls) a partire dalle registrazioni di auscultazioni respiratorie e' una sfida difficile a causa della sovrapposizione temporale e spettrale dei due segnali. In questo articolo viene usata una rappresentazione spettro-temporale per migliorare la separazione del segnale. La rappresentazione e' ottenuta attraverso la decomposizione in frequenze(detta anche modulazione di frequenza) delle traiettorie temporali delle componenti spettrali a breve termine. Gli esperimenti descritti qui suggeriscono che si puo' ottenere una maggiore separabilita' degli HS dagli LS nel dominio della modulazione di frequenza. I filtri passa banda e blocca banda sono progettati per separare i segnali HS e LS dalle registrazioni di suoni respiratori rispettivamente. 
+% 
+% L'ispezione visiva e uditiva e l'analisi quantitativa e il tempo di esecuzione dell'algoritmo vengono usati per stabilire le prestazioni dell'algoritmo. Le distanze nel logaritmo dello spettro al disotto di $1dB$ corroborano i nostri test di ascolto che non trovano artifatti udibili nei segnali separati HS ed LS. 
+% 
+% I suoni polmonari nelle registrazioni del respiro sono corrotti da suoni cardiaci quasi periodici che alterani le caratteristiche temporali e spettrali della registrazione. La cancellazione dei suoni cardiaci e' un compito difficile poiche' i segnali HS ed LS hanno frequenze che si sovrappongono in particolare al di sotto del $150Hz$. Il metodo piu' semplice per ridurre gli effetti dei suoni caridiaci e' di applicare un filtro passa alto con frequenza di soglia che va dai $50$ ai $150Hz$. Comunque a causa della sovrapposizione degli spettri il filtro passa alto degrada anche il segnale LS e questo puo' portare ad una diagnosi errata delle disfunzioni polmonari. Metodi piu' complessi per ridurre o cancellare i suoni cardiaci dalle registrazioni sono stati descritti in letteratura. Alcuni dei metodi proposti si basano su: tecniche di filtraggio adattative, riduzione del rumore attraverso le wavelet, combinazioni di localizzazione e rimozione dei segnali cardiaci e predizione dei segnali respiratori, 
+% filtraggio 
+% nel tempo e nelle frequenze,  analisi indipendente delle componenti. Alcuni di questi approcci si sono dimostrati affidabili. Una analisi soggettiva, tuttavia, ha suggerito che a causa della sovrapposizione temporale e spettrale tra i suoni cardiaci e i suoni respiratori, la riduzione dei suoni cardiaci puo' dar luogo a suoni disturbati da rumore o addirittura a suoni polmonari non piu' distinguibili. 
+% In questo articolo ci allontaniamo dalle rappresentazioni convenzionali temporali e spettrali del segnale ed esploriamo una rappresentazione alternativa spettro-temporale. Nel dominio proposto, chiamato dominio a modulazione di frequenza, si ottiene una maggiore separabilita' dei suoni cardiaci dai suoni respiratori.
+% Vengono progettati dei filtri passa banda ed elimina banda a modulazione di fase lineare rispettivamente per separare i segnali HS dai segnali LS. Enfatizziamo che il metodo proposto al contrario di molti metodi proposti in letteratura, non dipende da un segnale del battito cardiaco di riferimento(ottenuto di solito da un elettrocardiogramma), da una localizzazione del suono cardiaco e da una previsione dei suoni respiratori. Gli esperimenti con dati provenienti da due soggetti sani suggerisce che si e' ottenuta una separazione accurata dei segnali e che non vengono introdotti artifatti dal processo di separazione. Inoltre si puo' mostrare che il tempo di esecuzione dell'algoritmo e' approssimativamente un ordine di grandezza minore rispetto ad un algoritmo di cancellazione dei segnali cardiaci basato su un filtraggio nel tempo e nella frequenza.
+% 
+% Il trattamento spettro-temporale consiste nella decomposizione della frequenza delle traiettorie temporali delle componenti spettrale di breve termine del segnale. Alla registrazione viene applicata una trasformata di Fourier usando una certa finestra per generare la rappresentazione del segnale sia nel tempo che nella frequenza(chiameremo questa rappresentazione frequenza acustica per distinguerla dalla modulazione di frequenza).
+% Una seconda trasformata chiamata trasformata della modulazione, e' applicata alla traiettoria temporale della componente ?magnitude? di ogni frequenza acustica. 
+% Lo spettro di modulazione risultante contiene informazione che riguarda il tasso di cambiamento delle componenti del segnale spettrale. Nota che se vengono usate trasformazioni invertibli e non vengono alterate le componenti di fase allora il segnale originale si puo' ricotruire perfettamente.
+% L'assunzione studiata qui e' che i contenuti spettrali dei suoni del cuore cambiano a valori diversi da quelli dei contenuti spettrali dei suoni respiratori. I nostri esperimenti hanno suggerito che la parte importante dello spettro di modulazione dei suoni del cuore tipicamente cade approssimativamente tra i $2$ e i $20Hz$. 
+% I suoni respiratori d'altro canto, hanno una frequenza piu' ampia e la parte piu' importante della modulazione di frequenza e' situata a frequenze basse(minori di $2Hz$); tale comportamento e' prevedibile grazie alla ?stazionarieta'? dei suoni polmonari. 
+% 
+% Il filtraggio a modulazione e' descritto come il filtraggio delle traiettorie temporali delle componenti spettrali a breve termine. Supponiamo che $s(f, m)$ con $ f = 1, \cdots, N$ e $m = 1, \cdots, T$, denota la componente spettrale a breve termine nel bin di frequenza numero $f$ e al passo temporale $m$ di una analisi a breve termine. $N$ e $T$ denotano il numero totale di bande di frequenza e di passi temporale, rispettivamente.
+% Per una banda di frequenza fissa $f=F$, $s(F, m)$, $m = 1, \cdots, T$, rappresenta la traiettoria temporale nella banda $F$. Vengono usati due filtri FIR a modulazione. Il primo e' un filtro passa banda con frequenza di modulazione di soglia ad $1Hz$ e a $20Hz$; Il secondo e' un filtro elimina banda complementare al primo. Le modulazioni di frequenza al di sopra dei $20Hz$ vengono tenute perche' migliorano la naturalezza dei segnali LS. 
+% 
+% Nei nostri esperimenti usiamo una trasformata di Gabor per l'analisi spettrale. La trasformata di Gabor e' una trasformata unitaria(preserva l'energia) e consiste in un inner product con basi funzionali che sono esponenziali complessi con finetra. Nei nostri esperimenti, usiamo una trasformata di Gabor doppia e sovracampionata basandosi su una trasformata discreta di Fourier. Primo, la registazione dei suoni respiratori attraversa una finestra power complementary. Si applica una trasformata discreta di Fourier con $N$ campioni e poi si prende il valore assoluto($s(f,m)$) e la fase di ogni bin di frequenza vengono date in input al modulo di trattamento della modulazione. Il filtraggio a modulazione e la compensazione del ritardo di fase vengono fatti nel modulo di trattamento della modulazione. La traiettoria del valore assoluto relativa ai bin di frequenza $|s(f, m)|$ con $ m = 1, \cdots, T$ e' filtrato usando i filtri a modulazione passa banda ed elimina banda per generare i segnali $|\bar{s}(f, m)|$ e $|\
+% tilde{s}(f, m)|$ rispettivamente. Il trattamento della restante modulazione consiste nel ritardo di fase di un numero intero di esempi; Il ritardo dipende dall'ordine del filtro di fase lineare usato. L'output del trattamento della modulazione sono i segnali filtrati con un filtro passa banda ed elimina banda e le componenti difase ritardate. Si prendono due IDFT da $N$ punti. Il primo IDFT(chiamato IDFT-1) prende in input 
+% 
+% 
+% N -point IDFTs are then taken. The first IDFT (namely
+% IDFT-1) takes as input the N |ˆ(f, m)| and ∠ ̄(f, m) signals
+% s
+% s
+% to generate s(m). Similarly, IDFT-2 takes as input signals
+% ˆ
+% | ̃(f, m)| and ∠ ̄(f, m) to generate s(m). The outputs of
+% s
+% s
+%  ̃
+% the IDFT-1 and IDFT-2 modules are windowed by the
+% power complementary window and overlap-and-add is used
+% to reconstruct HS and LS signals, respectively.
+% B. Implementation Details
+% In our experiments, a square-root Hann window of length
+% 20 milliseconds with 50\% overlap (frame shifts of 10 mil-
+% liseconds) is used for the Gabor transform. In order to attain
+% accurate resolution at 1 Hz modulation frequency, higher
+% order filters are needed. Here, 150-tap linear phase filters
+% are used; such filter lengths are equivalent to analyzing 1.5 s
+% temporal trajectories. Moreover, it is observed with bandpass
+% filtered signals that the removal of lowpass modulation
+% spectral content may result in negative power spectral values.
+% As with the spectral subtraction paradigm used in speech
+% enhancement algorithms, a half-wave rectifier can be used.
+% Rectification, however, may introduce unwanted perceptual
+% artifacts to the separated HS signal. To avoid such artifacts,
+% one can opt to filter the cubic-root compressed magnitude
+% trajectories in lieu of the magnitude trajectories. In such
+% instances, cubic power expansion must be performed prior
+% to taking the IDFT. In our experiments, cubic compression-
+% expansion of bandpass filtered signals is used and negligible
+% rectification activation rates (<2\%) are obtained.
+% IV. E XPERIMENTS
+% In this section, a description of the data used in our
+% experiments is given and experimental results are presented.
+% A. Data: Breath Sound Recordings
+% The University of Manitoba breath sound recordings are
+% used in our experiments; the data has been made publicly
+% available by the Biomedical Engineering Laboratory. Data is
+% obtained from two healthy subjects aged 25 and 30 years.
+% Piezoelectric contact accelerometers were used to record
+% the respiratory sounds from the subjects in sitting position.
+% Accelerometers were secured with double-sided adhesive
+% tape rings at the following five locations: (1) right and (2)
+% left midclavicular, 2nd intercostal space, (3) right and (4) left
+% 4th intercostal space, and (5) center of chest.
+% Subjects were asked to maintain their target breathing
+% at low (7.5 ml/s/kg), medium (15 ml/s/kg), and high (22.5
+% ml/s/kg) flow rates. Subjects were instructed to breathe such
+% that one full breath occurred every two to three seconds
+% at every flow rate and had at least five breaths at each
+% target flow. Three recordings were made per subject and
+% each recording consisted of approximately 20 s at each target
+% flow and concluded with an approximate 5 s of breath hold
+% (total of ∼ 65 s). During breath hold, subjects were asked
+% to hold their breath with a closed glottis, thus allowing for a
+% reference heartbeat signal and background noise characteri-
+% zation. Breath sound signals were digitized with 10240 Hz
+% sample rate and 16-bit precision. In our experiments, data
+% is downsampled to 5 kHz in order to reduce computational
+% complexity. More detail about the data acquisition process
+% can be found in [8].
+% B. Experimental Results
+% The proposed method is tested on breath sound signals
+% captured at the five aforementioned locations. For the sake
+% of brevity, the plots in Fig. 4 depict signals recorded at
+% the center of the chest; similar performance is observed
+% for signals captured at the other four locations. Subplot
+% (a) depicts, from top to bottom, the airflow signal, breath
+% sound signal, and the separated HS and LS signals. Note
+% that HS signals are accurately separated even at high flow
+% rates. Moreover, subplot (b) illustrates zoomed-in plots of a
+% segment of low airflow breath sound along with the separated
+% HS and LS signals. As observed, HS and LS signals are
+% accurately separated even at low airflow rates.
+% Spectral plots are further depicted in Fig. 5. Subplot (a)
+% illustrates the spectra of “HS-free” breath sounds and the
+% separated LS signal. Power spectra are averaged over 5 s of
+% HS-free breath sounds, which were randomly selected from
+% segments of the breath sound recording between successive
+% heartbeats (selected segments were within ±20\% of the
+% target low airflow rate). Similarly, subplot (b) depicts average
+% power spectra of breath-hold sounds and the separated HS
+% signal. Power spectra are averaged over the approximate 5 s
+% breath-hold duration at the end of the recording session.
+% In order to quantitatively assess the performance of the
+% proposed method, the average log-spectral distance (LSD)
+% between the aforementioned breath sound spectra P (ω) and
+% ˆ
+% separated signal spectra P (ω) is used. The LSD, expressed
+% in decibel, is given by
+% LSD =
+% 1
+% 2π
+% 2
+% ω
+% 10 log10
+% −ω
+% P (ω)
+% ˆ
+% P (ω)
+% dω.
+% (1)
+% In speech coding research, two signals with LSD< 1 dB
+% are considered to be perceptually indistinguishable [9]. Using
+% this same difference limen for spectral transparency, it is
+% observed that average LSD of 0.61 dB and 0.31 dB are
+% attained for the separated LS and HS signals, respectively.
+% Hence, audible artifacts are not introduced by the proposed
+% separation method; this is further corroborated by listening
+% to the separated LS and HS signals.
+% C. A Note on Algorithm Execution Time
+% Algorithm execution time is also an important figure of
+% merit. The proposed algorithm is implemented using Matlab
+% version 7.2 Release 2006a. Simulations are run on a PC
+% with a 2.8 GHz Pentium 4 processor and 2 GB of RAM.
+% The execution time for heart and lung sound separation of
+% a 65 s breath sound recording, downsampled to 5 kHz, is
+% approximately 5.04 s (i.e., 0.08 realtime); execution time
+% doubles if the original sampling rate is used. Furthermore,
+% if only bandstop filtering is performed (equivalent to HS
+% cancelation), algorithm execution time is reduced to 3.16 s
+% for 5 kHz sample rate. Hence, the computational load of
+% the proposed algorithm is several orders of magnitude lower
+% than that reported in [4] for HS cancelation algorithms based
+% on adaptive filtering (12 h), wavelet denoising (7 min), and
+% time-frequency filtering (2 min) using a similar 60 s breath
+% sound recording with 10240 Hz sample rate.
+% V. C ONCLUSION
+% Conventional approaches to heart and lung sound sepa-
+% ration are based on temporal or spectral signal processing
+% techniques. A major disadvantage of such approaches, how-
+% ever, is that both sound signals overlap in the time and
+% frequency domains. In this paper, we have proposed an alter-
+% nate spectro-temporal signal representation which introduces
+% an additional dimension (termed modulation frequency) at
+% which improved signal separability can be attained. Visual
+% inspection suggests successful signal separation. Quantitative
+% analysis is used to demonstrate that audible artifacts are
+% not introduced to separated heart and lung sounds; informal
+% listening tests corroborate such findings. Moreover, algorithm
+% execution time is reduced by approximately one order of
+% magnitude relative to a state-of-art HS cancelation algorithm
+% based on time-frequency filtering.
+% 
+% \section{Separating Heart Sound from Lung Sound Using LabVIEW}
+%   
+% \section{Separating Heart Sounds from Lung Sounds}
+%   
+% \section{Separation of heart sound signal from lung sound signal by adaptive line enhancement}
+%   
+% \section{Separation of Heart Sounds  and  Lung Sounds using Independent Component Analysis}
+%   
+% \section{Heart Sounds Separation From Lung Sounds Using Independent Component Analysis}
+%   

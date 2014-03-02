@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="WavFile/|breathMonitor/BeatDetectorBooleanInputStream.java|breathMonitor/CopyOfBreathingPattern.java|breathMonitor/CopyOfBreathMonitor.java|breathMonitor/CopyOfClusterer.java" kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="/home/federico/Libs/pcmsampledsp-0.9.2.jar"/>
+	<classpathentry kind="lib" path="/home/federico/workspaceJava/jtransform.jar"/>
+	<classpathentry kind="lib" path="/home/federico/Downloads/bluecove-gpl-2.1.0.jar"/>
+	<classpathentry kind="lib" path="/home/federico/Downloads/bluecove-2.1.0.jar"/>
+	<classpathentry kind="lib" path="/home/federico/Libs/commons-math3-3.1.1.jar"/>
+	<classpathentry kind="lib" path="/home/federico/Libs/db-derby-10.9.1.0-lib/lib/derby.jar"/>
+	<classpathentry kind="lib" path="/home/federico/Libs/db-derby-10.9.1.0-lib/lib/derbyclient.jar"/>
+	<classpathentry kind="lib" path="/home/federico/Libs/db-derby-10.9.1.0-lib/lib/derbynet.jar"/>
+	<classpathentry kind="lib" path="/home/federico/Libs/db-derby-10.9.1.0-lib/lib/derbyrun.jar"/>
+	<classpathentry kind="lib" path="/home/federico/Libs/db-derby-10.9.1.0-lib/lib/derbytools.jar"/>
+	<classpathentry kind="lib" path="/home/federico/Downloads/jmathplot.jar"/>
+	<classpathentry kind="lib" path="/home/federico/workspaceJava/jstk.jar"/>
+	<classpathentry kind="lib" path="/home/federico/workspaceJava/minim/library/minim.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -1,0 +1,133 @@
+
+
+
+\section{Clustering}
+\label{clustering}
+Il clustering \`e il processo di trovare informazioni strutturali all'interno di un insieme di dati. 
+I meccanismi di clustering separano e organizzano dati non etichettati in vari gruppi o cluster, ognuno dei quali contiene dati che sono simili tra loro. 
+Un buon algoritmo di clustering produce cluster nel quale la somiglianza intracluster, cio\`e tra gli elementi di un cluster, \`e alta mentre la somiglianza intercluster, cio\`e tra elementi di cluster diversi, \`e bassa. 
+Per una discussione approfondita sul clustering si rimanda a \cite{PatternRecognition}.
+
+Se vogliamo essere piu' formali possiamo dire che un $m-clustering$ di un insieme di dati $X$ rispetto ad una distanza o misura di dissimilarit\`a $d:P(X)\rightarrow \mathbb{R}$ e ad una soglia $t$ \`e $C_{1}, \cdots, C_{n}$ tale che:
+\begin{description}
+  \item[partizione]
+    $C_{1}, \cdots, C_{n}$ \`e una partizione di $X$ cio\`e: ogni $C_{i}$ \`e un sottoinsieme di $X$; i $C_{i}$ sono a due a due disgiunti; l'unione dei $C_{i}$ d\`a $X$
+  \item[intersimilarit\`a]
+    per ogni $i$: $d(C_{i})<t$
+\end{description}
+
+
+
+  
+Di seguito descriveremo alcuni tipi di algoritmi di clustering. 
+Ci sono due tipi principali di algoritmi di clustering a seconda dei parametri di input. 
+Una categoria di algoritmi prende in input il numero di cluster, oltre che gli elementi di input e la funzione di dissimilarit\`a, e restituisce un clustering dei dati. 
+Una seconda categoria di algoritmi prende in input un valore di soglia e restituisce un clustering.
+\paragraph{Clustering sequenziale.}
+  Questi algoritmi leggono gli elementi di input uno per volta in sequenza. 
+  In questo tipo di algoritmi non conosciamo a priori il numero di cluster presenti nell'input. 
+  Invece prendono in input una soglia $\theta$ e il massimo numero di cluster permessi $q$. 
+  L'idea alla base di questi algoritmi \`e che quando viene letto un elemento, questo viene o assegnato ad un cluster esistente o ad un nuovo cluster a seconda della distanza tra l'elemento e i cluster esistenti. 
+  Uno schema generale per implementare un algoritmo di clustering sequenziale \`e dati in figura \ref{clusteringSequenzialeAlgoritmo}.
+
+\incmargin{1em}
+\restylealgo{boxed}\linesnumbered
+\begin{algorithm}
+  \dontprintsemicolon
+  \SetVline
+  % \SetNoline
+%   \SetKwData{b}{b}
+%   \SetKwData{This}{this}
+%   \SetKwData{Up}{up}
+  \SetKwFunction{getAverageLocalEnergy}{getAverageLocalEnergy}
+  \SetKwFunction{getInstantSoundEnergy}{getInstantSoundEnergy}
+  \SetKwFunction{Write}{write}
+  \SetKwFunction{Init}{init}
+  \SetKwFunction{Clear}{clear}
+  \SetKwFunction{Add}{add}
+  \SetKwFunction{DDDD}{distance}
+  \SetKwInOut{Input}{input}
+  \SetKwInOut{Output}{output}
+  \caption{Sequential clustering algorithm}
+    \Input{A sequence of data $x_{1}, \cdots, x_{n}$}
+    \Output{A clustering of the data $C_{1}, \cdots, C_{m}$}
+    \BlankLine
+    $m\leftarrow 1$\;
+    $C_{m}\leftarrow \{x_{1}\}$\;
+    \For{$i\leftarrow 2$ \KwTo $n$}{
+      find $k$ such that the distance between $x_{i}$ and $C_{k}$ is minimum\;
+       \eIf{$\DDDD(x_{i}, C_{k}) > $ threshold}{
+ 	increments $m$\;
+ 	$C_{m}\leftarrow \{x_{i}\}$\;
+       }{
+ 	$C_{m}\leftarrow C_{m}\cup \{x_{i}\}$\;
+       }
+  }
+\label{clusteringSequenzialeAlgoritmo}
+\end{algorithm}
+\decmargin{1em}
+
+Un algoritmo di clustering sequenziale si dice \emph{a cluster sequenziali} se produce cluster sequenziali e cio\`e \`e tale che ad ogni iterazione: o si aggiunge l'elemento corrente nello stesso cluster dell'iterazione precedente, o si aggiunge l'elemento in un nuovo cluster.
+
+Se non si conosce in anticipo neanche il valore di soglia allora si pu\`o stimare il numero di cluster che ci sono nell'input usando l'algoritmo \ref{determinareClusterN}. 
+
+\incmargin{1em}
+\restylealgo{boxed}\linesnumbered
+\begin{algorithm}
+  \dontprintsemicolon
+  \SetVline
+  % \SetNoline
+%   \SetKwData{b}{b}
+%   \SetKwData{This}{this}
+%   \SetKwData{Up}{up}
+  \SetKwFunction{getAverageLocalEnergy}{getAverageLocalEnergy}
+  \SetKwFunction{getInstantSoundEnergy}{getInstantSoundEnergy}
+  \SetKwFunction{Write}{write}
+  \SetKwFunction{Init}{init}
+  \SetKwFunction{Clear}{clear}
+  \SetKwFunction{Add}{add}
+  \SetKwFunction{DDDD}{distance}
+  \SetKwInOut{Input}{input}
+  \SetKwInOut{Output}{output}
+  \caption{Algoritmo di stima del numero dei cluster. Usato nella sezione \ref{clusteringMetodologia}}
+    \Input{A sequence of data $x_{1}, \cdots, x_{n}$}
+    \Output{An estimation of the number of clusters}
+    \BlankLine
+    \For{threshold $\leftarrow$ a \KwTo b step c}{
+      run clustering algorithm with current threshold\;
+      store the number of clusters obtained\;
+    }
+    \Return the most frequent number of clusters\;
+\label{determinareClusterN}
+\end{algorithm}
+\decmargin{1em}
+
+
+
+\paragraph{Clustering gerarchico.}
+Il clustering gerarchico \`e un approccio di clustering che mira a costruire una gerarchia di cluster. 
+Le strategie per il clustering gerarchico sono tipicamente di due tipi:
+\begin{description}
+  \item[Agglomerativo] 
+    questo tipo di algoritmo produce una sequenza di clustering che hanno numero di cluster decrescente. 
+  \item[Divisivo]
+    questo tipo di algoritmo produce una sequenza di clustering che hanno numero di cluster crescente. 
+    Ad ogni iterazione un algoritmo di questo tipo prende i cluster risultati dall'iterazione precedente e li divide.
+\end{description}
+
+
+\paragraph{Algoritmi di clustering basati su una funzione di ottimizzazione del costo.}
+In questi algoritmi il numero di cluster \`e fisso. 
+Si cerca di assegnare gli elementi di input ai cluster in modo da ottimizzare il valore di una funzione di costo. 
+
+
+
+% Provare: 
+%   mantenere il massimo e il minimo dell'energia di una finestra di 10ms
+%   se l'energia di una finestra \`e maggiore dell'ottanta per cento del massimo allora \`e un beat, se \`e minore del 120 per cento  del minimo allora \`e silenzio
+%   il respiro \`e beat seguito da non beat
+
+
+
+% provare: 
+% vari thread di esecuzione, ognuno un k clustering online sequenziale, k va da 1 a 10, quello che raggiunge una maggiore qualit\`a di clustering \`e l'algoritmo corretto

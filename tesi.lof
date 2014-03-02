@@ -1,0 +1,37 @@
+\select@language {italian}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Elenco di pattern respiratori \cite {ABP}}}{18}{figure.2.1}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Rappresentazione delle principali grandezze dell'onda sonora \cite {IONDASON}}}{21}{figure.3.1}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Discretizzazione di un suono da analogico a digitale}}{22}{figure.3.2}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Campionamento e quantizzazione di un segnale continuo.}}{23}{figure.3.3}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Esempi di grafici nel dominio del tempo e nel dominio delle frequenze \cite {IDOMTF}}}{26}{figure.3.4}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Esempio di un filtro passa alto \cite {SELET}}}{30}{figure.4.1}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Esempio di un filtro passa basso \cite {SELET}}}{30}{figure.4.2}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Esempio di un filtro passa banda \cite {SELET}}}{31}{figure.4.3}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Esempio di un filtro soppressore di banda \cite {SELET}}}{31}{figure.4.4}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Organizzazione dei contenuti nelle sezioni del capitolo}}{34}{figure.5.1}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Diagramma di attivit\`a di un generico algoritmo di beat detection}}{35}{figure.5.2}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Suono del respiro dopo applicazione di un filtro passabanda impostato sulla frequenza tipica delle fasi respiratorie}}{47}{figure.6.1}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Forma d'onda di un segnale che contiene respiro.}}{64}{figure.7.1}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {8.1}{\ignorespaces Diagramma dei casi d'uso}}{66}{figure.8.1}
+\contentsline {figure}{\numberline {8.2}{\ignorespaces Diagramma dei casi d'uso opzionali}}{69}{figure.8.2}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {9.1}{\ignorespaces Diagramma delle componenti del sistema}}{72}{figure.9.1}
+\contentsline {figure}{\numberline {9.2}{\ignorespaces Possibili componenti che implementano l'interfaccia con un meccanismo di persistenza}}{73}{figure.9.2}
+\contentsline {figure}{\numberline {9.3}{\ignorespaces Operazioni dell'interfaccia con lo stetoscopio}}{74}{figure.9.3}
+\contentsline {figure}{\numberline {9.4}{\ignorespaces Possibili componenti che implementano l'interfaccia con lo stetoscopio}}{74}{figure.9.4}
+\contentsline {figure}{\numberline {9.5}{\ignorespaces Architettura del sistema}}{76}{figure.9.5}
+\contentsline {figure}{\numberline {9.6}{\ignorespaces Operazioni dell'interfaccia utente}}{77}{figure.9.6}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {10.1}{\ignorespaces Diagramma di attivit\`a della fase di filtraggio}}{79}{figure.10.1}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {11.1}{\ignorespaces Processo di aggiunta del rumore}}{84}{figure.11.1}
+\addvspace {10\p@ }
+\addvspace {10\p@ }

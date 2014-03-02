@@ -1,0 +1,63 @@
+\section{Reti neurali}
+\label{retineurali}
+Le \emph{reti neurali artificiali} sono modelli matematici e computazionali della corteccia cerebrale. 
+Gli elementi di base di una rete neurale artificiale sono:
+\begin{description}
+  \item[neuroni artificiali o unita']
+%     neuroni artificiali o \emph{unita'} 
+  \item[collegamenti]
+    I neuroni artificiali sono connessi attraverso \emph{collegamenti}. 
+    Ogni collegamento ha un \emph{peso} numerico, in particolare il collegamento tra l'unita' $i$ e l'unita' $j$ ha peso $w_{i,j}$. 
+\end{description}
+Una certa unita' $i$ pu\`o inviare un \emph{segnale} o \emph{attivazione} $a_{i}$ su tutti i suoi collegamenti. 
+Il peso di un collegamento determina la forza e il segno del segnale. 
+Assumiamo l'esistenza di una certa unita' di input che manda il segnale $a_{0}$. 
+Ogni unita' si comporta nel modo seguente:
+\begin{enumerate}
+  \item 
+    calcola la somma pesata dei suoi input
+    \begin{center}
+      $in_{j} = \sum\limits_{i=0}^n w_{i,j} a_{i}$
+    \end{center}
+  \item
+    calcola il proprio output in base al valore calcolato al punto precedente e ad una \emph{funzione di attivazione} $g$: 
+    \begin{center}    
+      $a_{j}=g(in_{j})$
+    \end{center}    
+\end{enumerate}
+La funzione di attivazione di solito \`e una funzione del tipo:
+\begin{center}
+  \begin{tabular}{lll}
+      $g(x)= \left\{ 
+	  \begin{array}{ll}
+	      0
+	    &
+	      if\; x< 0
+	    \\
+	      1
+	    &
+	      if\; x> 0
+	  \end{array}
+      \right.$
+    &
+      o
+    &
+      $g(x)= \frac{1}{1+e^{-x}}$
+  \end{tabular}
+\end{center}
+
+Ci sono due tipi di reti neurali:
+\begin{description}
+  \item[feed forward]
+    I collegamenti tra unita' sono unidirezionali. 
+    In questo caso la rete neurale \`e un grafo diretto aciclico. 
+    Una rete neurale di tipo feed forward rappresenta una funzione dei suoi input nel senso che non ha uno stato interno o memoria. 
+    Una rete feed forward \`e di solito divisa in \emph{layers} o livelli. 
+    Ogni livello \`e un insieme di unita', ogni unita' riceve input solo da unita' del livello immediatamente precedente. 
+    Una rete con un solo livello si dice anche \emph{single-layer} o \emph{monolivello}.
+  \item[recurrent network]
+    Ci possono essere dei cicli nei collegamenti. 
+    Una rete di questo tipo rappresenta un sistema dinamico che pu\`o anche oscillare o avere un comportamento caotico. 
+    Inoltre la riposta di una recurrent network dipende dallo stato iniziale della rete e dall'input quindi questo tipo di rete pu\`o supportare una memoria a breve termine.
+\end{description}
+

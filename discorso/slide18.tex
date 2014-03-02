@@ -1,0 +1,8 @@
+\section{Slide 18 Caso di test di localizzazione di una apnea troppo lunga}
+Questo caso di test usa una registrazione di suoni respiratori normali di un soggetto sano. La registrazione prima viene concatenata varie volte e poi gli viene aggiunta con Audacity una pausa respiratoria molto lunga.
+
+La pausa comincia all'istante $35s$ e termina all'istante $1m:17s$. 
+La lunghezza totale del file \`e $1m:41s$.
+Il sistema riconosce in modo corretto la pausa dal tempo $36s$ al tempo $1m:16s$.
+L'allarme suona al tempo $64s$ cio\`e $30s$ dopo l'inizio della pausa, e questo \`e esattamente quello che ci aspettiamo.
+Quindi possiamo dire che questo caso di test si \`e concluso con successo.

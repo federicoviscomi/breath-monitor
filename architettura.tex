@@ -1,0 +1,139 @@
+
+\chapter{Architettura}
+
+
+% Un algoritmo si dice \emph{online} se processa il suo input pezzo dopo pezzo in modo sequenziale, cio\`e nell'ordine nel quale l'input viene dato all'algoritmo. L'algoritmo deve produrre risultati a priori cio\`e anche senza avere a disposizione l'intero input fin dall'inizio. D'altro canto un algoritmo si dice \emph{offline} se pu\`o produrre una risposta anche dopo aver analizzato tutto il suo input. Per sua natura un algoritmo online deve fare delle scelte parziali. 
+
+\section{Componenti}
+
+\begin{figure}
+  \centering
+  %  \includegraphics[width=\textwidth,height=0.4\textheight]{./componentdiagram.png}
+  \includegraphics[width=0.8\textwidth]{./componentdiagram.png}
+  % componentdiagram.png: 963x508 pixel, 96dpi, 25.48x13.44 cm, bb=0 0 722 381
+  \caption{Diagramma delle componenti del sistema}
+  \label{componentiSistemaArchitettura}
+\end{figure}
+
+Il sistema di monitoraggio ha le componenti illustrate nella figura \ref{componentiSistemaArchitettura}. Discutiamo di ognuna di esse pi\`u in dettaglio nel seguito del capitolo
+
+\subsection{Meccanismi di persistenza}
+
+Il sistema implementa dei meccanismi di persistenza. Un interfaccia minimale di una componente che implementa un meccanismo di persistenza deve offrire le operazioni seguenti:
+\begin{itemize}
+  \item 
+    Aggiungere i dati di nuovo soggetto.
+  \item
+    Aggiungere una entry di dati di un monitoraggio relativa ad un certo soggetto.
+  \item
+    Cercare una entry di dati di un monitoraggio a partire dai dati del soggetto e/o dalla data del monitoraggio.
+  \item
+    Reperire una entry di dati di un monitoraggio a partide da una chiave cercata in precedenza.
+\end{itemize}
+
+% Siamo di fronte ad un classico caso di tipo di dato astratto memoria associativa. 
+La figura \ref{pppppp} elenca alcuni possibli modi di implementare questo meccanismo di persistenza.
+
+
+\begin{figure}
+  \centering
+  \includegraphics{./persistencyManagerInterface.png}
+  % persistencyManagerInterface.png: 466x281 pixel, 96dpi, 12.33x7.43 cm, bb=0 0 349 211
+  \caption{Possibili componenti che implementano l'interfaccia con un meccanismo di persistenza}
+  \label{pppppp}
+\end{figure}
+
+% \begin{figure}
+%  \includegraphics{./persistencyManagerInterfaceOperations.png}
+%  % persistencyManagerInterfaceOperations.png: 382x92 pixel, 96dpi, 10.11x2.43 cm, bb=0 0 286 69
+%   \label{persistencyManagerInterfaceOperations}
+%   \caption{Interfaccia del meccanismo di persistenza}
+% \end{figure}
+
+I dati persistenti sono: il nome del sogetto, la data, l'indice di apnea-ipopnea e una sequenza di etichette nell'insieme: respiro o pausa respiratoria. Ogni etichetta corrisponde a $4s$ di segnale. 
+% \paragraph{$File\; nella\; memoria\; di\; massa$}
+  Il sistema permette di salvare i dati di un monitoraggio sulla memoria di massa del computer sotto forma di file. Vengono usati i meccanismi di serializzazione offerti da Java. La serializzazione di Java permette di memorizzare e leggere uno stream di oggetti Java\cite{javaSerializable}. 
+  Per ottimizzare questa operazione, i dati vengono memorizzati prima in un buffer, quando il buffer si riempe vengono scritti sulla memoria di massa. 
+  Anche se questa ottimizzazione pu\`o sembrare inutile in quanto tutti i file system moderni sfruttano un meccanismo implicito di buffering, la dimensione di quest'ultimo potrebbe avere un valore predefinito troppo piccolo.
+
+
+% \paragraph{$Database$}
+% Decidere e descrivere cosa come e dove viene memorizzato(tabelle e campi)
+
+
+% sogetto(
+%   nome completo VARCHAR(50),
+%   data di nascita DATE,
+%   registrazioni: nome di una tabella che contiene tutti i riferimenti alle registrazioni relative a questo soggetto
+% )
+% 
+% persone(
+%     id ID,
+%     nome completo VARCHAR(50),
+%     data di nascita DATE,
+%     luogo di nascita VARCHAR(50),
+%     luogo di residenza VARCHAR(50),
+%     PRIMARY KEY (nome completo, data di nascita, luogo di nascita, id unico)
+% )
+% 
+% registrazioni(
+%   soggetto riferimeto a persone
+%   
+% )
+
+
+
+
+
+
+\subsection{Interfaccia con lo stetoscopio}
+\include{deployment}
+
+
+
+\subsection{Interfaccia utente}
+
+
+
+Una interfaccia utente per questo sistema dovrebbe fornire almeno le operazioni elencate nella figura \ref{interfacciautente}.
+
+  \begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{./userInterfaceOperations.png}
+  % userInterfaceOperations.png: 583x138 pixel, 96dpi, 15.42x3.65 cm, bb=0 0 437 103
+  \caption{Operazioni dell'interfaccia utente}
+  \label{interfacciautente}
+  \end{figure}
+
+Sono state implementate due interfacce minimali: 
+\begin{description}
+  \item[console]
+    Un interprete di comandi da console che ha questo aspetto:
+    \begin{verbatim}
+Breath Monitor Beta version
+by Federico Viscomi
+type help for a command list
+
+$ help
+
+exit                	exit application             
+help                	print this help               
+list                	list working directory content
+monitor -f filename 	start breath recognition on given file name
+stop                	stop current monitoring if any
+$ 
+    \end{verbatim}
+
+  \item[GUI]
+    Una interfaccia grafica basata su Swing \cite{Swing} che offre le stesse funzioni di quella grafica e in pi\`u usa la libreria open source JMathPlot \cite{jmathplot} per disegnare il grafico nel dominio del tempo del segnale. Questo grafico \`e utile solo nella versione iniziale del sistema per motivi di debug. Mentre in una versione successiva del sistema si pu\`o rimpiazzare questo grafico con quello del flusso d'aria. La finestra principale \`e illustrata in figura \ref{finestraprincipale}.
+\end{description}
+
+\begin{figure}
+ \centering
+ \includegraphics[width=0.8\textwidth]{gui.png}
+ % gui.png: 0x0 pixel, 0dpi, 0.00x0.00 cm, bb=
+  \label{finestraprincipale}
+\end{figure}
+
+
+
